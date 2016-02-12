@@ -1,0 +1,34 @@
+  <!-- Kinect -->
+<!-- configured bringup file for kinect-->
+<launch>
+  <arg name="img_mode" default="qhd"/>
+  <arg name="payload" default="boom"/>
+  <arg name="device" default="kinect"/>
+  <!--for Interfacing with web server and rtabmap together-->
+  <!--Points, not actually lowres-->
+  <remap from="/$(arg device)/$(arg img_mode)/points" 
+	to="/$(arg payload)/$(arg device)/depth_lowres/points"/>
+
+  <!--RGB-->
+  <remap from="/$(arg device)/$(arg img_mode)/image_color" 
+	to="/$(arg payload)/$(arg device)/rgb/image"/>
+  <remap from="/$(arg device)/$(arg img_mode)/image_color_rect" 
+	to="/$(arg payload)/$(arg device)/rgb/image_rect"/>
+
+  <remap from="/$(arg device)/$(arg img_mode)/camera_info" 
+	to="/$(arg payload)/$(arg device)/rgb/camera_info"/>
+  <!--IR-->
+  <remap from="/$(arg device)/sd/image_ir" 
+	to="/$(arg payload)/$(arg device)/ir/image"/>
+
+  <remap from="/$(arg device)/sd/camera_info" 
+	to="/$(arg payload)/$(arg device)/ir/camera_info"/>
+  <!--Depth-->
+  <remap from="/$(arg device)/$(arg img_mode)/image_depth_rect
+" 
+	to="/$(arg payload)/$(arg device)/depth/image_rect"/>
+  <include  file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" >
+    <arg name="base_name" value="$(arg device)"/>
+  </include>
+
+</launch>

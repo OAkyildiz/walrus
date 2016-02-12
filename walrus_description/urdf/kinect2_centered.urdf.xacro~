@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!-- This is a hand-made URDF XACRO file for the Microsoft Kinect v2 sensor (Xbox ONE) -->
+<!-- Author: Ozan Akyildiz, 02/11/2016-->
+<!-- License: GPLv3+ -->
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="kinect2"> 
+
+  <xacro:macro name="kinect2" params="parent name *origin tf_prefix">
+
+    <material name="Kinect2Grey">
+      <color rgba="0.15 0.15 0.15 1.0"/>
+    </material>
+
+
+    <!-- Joint connecting the parent to our frame_in -->
+    <joint name="${tf_prefix}_base_joint" type="fixed">
+      <insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${tf_prefix}_base"/>
+    </joint>
+    
+    <link name="${tf_prefix}_base">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <!-- these meshes were exported in mm, so scale back to m -->
+          <mesh filename="package://walrus_description/meshes/kinect2/kinect2_centered.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Kinect2Grey"/>
+      </visual>
+    </link>
+    
+    <!-- Joint connecting the ir frame to base frame -->
+    <joint name="${tf_prefix}_ir_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 .025"/>
+      <parent link="${tf_prefix}_base"/>
+      <child link="${tf_prefix}_ir_optical_frame"/>
+    </joint>
+
+    <link name="${tf_prefix}_ir_optical_frame">
+      
+    </link>
+    
+     <!-- Joint connecting the rgb frame to base frame -->
+    <joint name="${tf_prefix}_rgb_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0 -.100 .025"/>
+      <parent link="${tf_prefix}_base"/>
+      <child link="${tf_prefix}_rgb_optical_frame"/>
+    </joint>
+    
+    <link name="${tf_prefix}_rgb_optical_frame">
+    </link>
+	
+  </xacro:macro>
+</robot>

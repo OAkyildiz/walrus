@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="walrus_boom">
-        <xacro:include filename="$(find walrus_description)/urdf/kinectv2.urdf.xacro" />
+        <xacro:include filename="$(find walrus_description)/urdf/kinect2_centered.urdf.xacro" />
 
 	<xacro:macro name="walrus_boom" params="parent tf_prefix robot_ns">
 		<!-- Boom base -->
@@ -17,7 +17,7 @@
 				<geometry>
 			                <box size = "0.08 0.04 0.02"/>
 				</geometry>
-				<material name="green">
+				<material name="black">
 					<color rgba="0 0.8 0 1"/>
 				</material>
 			</visual>
@@ -48,7 +48,7 @@
 				<geometry>
 			                <box size = "0.04 0.04 0.02"/>
 				</geometry>
-				<material name="green">
+				<material name="black">
 					<color rgba="0 0.8 0 1"/>
 				</material>
 			</visual>
@@ -88,7 +88,7 @@
 				<geometry>
 			                <cylinder length="0.5" radius="0.02"/>
 				</geometry>
-				<material name="green">
+				<material name="black">
 					<color rgba="0 0.8 0 1"/>
 				</material>
 			</visual>
@@ -130,7 +130,7 @@
 				<geometry>
 			                <box size = "0.04 0.1 0.02"/>
 				</geometry>
-				<material name="green">
+				<material name="black">
 					<color rgba="0 0.8 0 1"/>
 				</material>
 			</visual>
@@ -158,9 +158,10 @@
 		</transmission>
 
 		<!-- Kinect -->
-		<kinectv2 parent="${tf_prefix}tilt_base" tf_prefix="${tf_prefix}kinect" camera_ns="${robot_ns}/kinect" name="boom_kinect">
+		<!--kinect2 parent="${tf_prefix}tilt_base" tf_prefix="${tf_prefix}kinect" camera_ns="${robot_ns}/kinect" name="boom_kinect"-->
+		<kinect2 parent="${tf_prefix}tilt_base" tf_prefix="${tf_prefix}kinect" name="kinect" >
 			<origin xyz="0 0 0.03" rpy="0 0 0" />
-		</kinectv2>
+		</kinect2>
 
   	</xacro:macro>
 </robot>

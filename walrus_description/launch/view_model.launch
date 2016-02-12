@@ -1,8 +1,8 @@
 <launch>
   <arg name="have_boom" default="true" />
   <arg name="have_oryx_arm" default="true" />
-
-  <include file="$(find walrus_description)/launch/description.launch">
+  <!--machine name="walrus" address="192.168.1.1" env-loader="/opt/ros/indigo/env.sh"/-->
+  <include file="$(find walrus_description)/launch/description.launch" machine="walrus">
     <arg name="have_boom" default="$(arg have_boom)" />
     <arg name="have_oryx_arm" default="$(arg have_oryx_arm)" />
   </include>

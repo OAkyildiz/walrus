@@ -2,6 +2,7 @@
 <launch>
   <arg name="have_boom" default="true"/>
   <arg name="have_oryx_arm" default="true"/>
+  
 
   <include file="$(find walrus_base_hw)/launch/walrus_base_hw.launch" />
 
@@ -17,7 +18,7 @@
   <remap from="/boom_kinect/rgb/camera_info" to="/boom/kinect/rgb/camera_info"/>
   <remap from="/boom_kinect/ir/image" to="/boom/kinect/ir/image"/>
   <remap from="/boom_kinect/ir/camera_info" to="/boom/kinect/ir/camera_info"/>
-  <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" if="$(arg have_boom)">
+  <include ns="boom" file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" if="$(arg have_boom)">
     <arg name="base_name" value="boom_kinect"/>
   </include>
 

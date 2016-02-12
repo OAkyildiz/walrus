@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   diagnostic_updater
   walrus_base_hw
   rosserial_server
+  
 )
 
 ###################################
@@ -28,15 +29,22 @@ include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
-
+### walrus_boomboard_node
 add_executable(walrus_boomboard_node
   src/${PROJECT_NAME}/walrus_boomboard_robot.cpp
   src/${PROJECT_NAME}/walrus_boomboard_node.cpp
 )
-
 target_link_libraries(walrus_boomboard_node
    ${catkin_LIBRARIES}
 )
+### dummy_boom_state_publisher 
+add_executable(dummy_boom_state_publisher 
+    src/${PROJECT_NAME}/dummy_boom_state_publisher.cpp
+)
+target_link_libraries(dummy_boom_state_publisher
+   ${catkin_LIBRARIES}
+)
+
 
 #############
 ## Install ##
@@ -46,4 +54,5 @@ install(TARGETS walrus_boomboard_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+  )
+#install(dummy_boom_state_publisher ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION} LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION} RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

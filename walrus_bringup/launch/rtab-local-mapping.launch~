@@ -1,0 +1,36 @@
+<launch>
+  <arg name="ns" default="rtabmap" />
+ <!-- Base -->
+  <arg name="tf_main" default="walrus" />
+  <arg name="base" default="base_epos"/>
+  <arg name="ctrl" default="drive_controller" />
+	
+ <!-- Sensor -->
+  <arg name="img_mode" default="qhd"/>
+  <arg name="payload" default="boom"/>
+  <arg name="device" default="kinect"/>
+
+  <group ns="$(arg ns)">
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+  	  <!--Base-->
+          <param name="frame_id" type="string" value="($arg tf_main)/base_link"/>
+
+          <param name="subscribe_depth" type="bool" value="true"/>
+
+          <remap from="odom" to="/$(arg base)/$(arg ctrl)/odom"/>
+  	  <!--Sensor-->
+          <remap from="rgb/image" to="/$(arg payload)/$(arg device)/$(arg img_mode)/image_color_rect"/>
+          <remap from="depth/image" to="/$(arg payload)/$(arg device)/depth/image_rect"/>
+          <remap from="rgb/camera_info" to="/$(arg payload)/$(arg device)/rgb/camera_info"/>
+
+          <param name="queue_size" type="int" value="10"/>
+
+          <!-- RTAB-Map's parameters -->
+          <param name="RGBD/AngularUpdate" type="string" value="0.01"/>
+          <param name="RGBD/LinearUpdate" type="string" value="0.01"/>
+          <param name="Rtabmap/TimeThr" type="string" value="700"/>
+          <param name="Mem/RehearsalSimilarity" type="string" value="0.45"/>
+          <param name="RGBD/OptimizeFromGraphEnd" type="string" value="true"/>
+    </node>
+  </group>
+</launch>

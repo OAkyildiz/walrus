@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!-- This is a hand-made URDF XACRO file for the Microsoft Kinect-2 sensor (Xbox ONE) -->
+<!-- Copyright Universitaet Bremen - Instititute for Artificial Intelligence. Author: Alexis Maldonado -->
+<!-- Modified by: Ozan Akyildiz, 02/11/2016-->
+<!-- License: GPLv3+ -->
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="kinect2"> 
+
+  <xacro:macro name="kinect2" params="parent *origin tf_prefix name">
+
+    <material name="Kinect2Grey">
+      <color rgba="0.15 0.15 0.15 1.0"/>
+    </material>
+
+
+    <!-- Joint connecting the parent to our frame_in -->
+    <joint name="${tf_prefix}_kinect2_in_joint" type="fixed">
+      <insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${tf_prefix}_kinect2_ir_optical_frame"/>
+    </joint>
+
+    <link name="${tf_prefix}_kinect2_ir_optical_frame">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <!-- these meshes were exported in mm, so scale back to m -->
+          <mesh filename="package://walrus_description/meshes/kinect2/kinect2_origin_on_rgb_optical_frame.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="Kinect2Grey"/>
+      </visual>
+    </link>
+    
+     <!-- Joint connecting the ir frame to rgb frame -->
+    <joint name="${tf_prefix}_kinect2_cameras_joint" type="fixed">
+      <parent link="${tf_prefix}_kinect2_ir_optical_frame"/>
+      <child link="${tf_prefix}_kinect2_rgb_optical_frame"/>
+    </joint>
+    <link name="${tf_prefix}_kinect2_rgb_optical_frame">
+    	<visual>
+    		<origin rpy="0 0 0" xyz="0 0 0"/>
+    		<geometry>
+    			<box size = "0.01 0.1 0.01"/>
+    		</geometry>
+       		<!--<geometry>
+          		<mesh filename="package://walrus_description/meshes/kinect2/kinect2_origin_on_rgb_optical_frame.stl" scale="0.001 0.001 0.001"/>
+        	</geometry>-->
+        	<material name="Kinect2Grey"/>
+        </visual>
+        <collision>
+        	<geometry>
+        		<box size = "0.04 0.1 0.03"/>
+        	</geometry>
+        </collision>
+    </link>
+	
+  </xacro:macro>
+</robot>
