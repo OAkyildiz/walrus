@@ -1,29 +1,32 @@
 <!-- Bringup file for the robot -->
 <launch>
-  <arg name="have_kinect" default="true"/>
-  <arg name="have_boom" default="true"/>
+  <arg name="have_boom" default="false"/>
   <arg name="have_oryx_arm" default="false"/>
-  <arg name="payload" value="boom"/> 
-  <arg name="kinect_devname" value="kinect"/> <!-- obsolate-->
-
-  <arg name="base_cameras_en" value="true"/> <!--camera_enable flag-->
+  <arg name="payload" value="boom"/>
+  <arg name="kinect_devname" value="kinect"/>
+  <arg name="base_name" value="kinect2"/>
+  <arg name="base_cameras_en" value="true"/>
   
   <include file="$(find walrus_base_hw)/launch/walrus_base_hw.launch" />
 
-  <node name="boom" pkg="walrus_boomboard_driver" type="walrus_boomboard_node" respawn="true" respawn_delay="5" if="$(arg have_boom)">
-  
+  <node name="$(arg payload)" pkg="walrus_boomboard_driver" type="walrus_boomboard_node" respawn="true" respawn_delay="5" if="$(arg have_boom)">
   	<remap from="$(arg payload)/joint_states" to="joint_states" />
   	<param name="controller_rate" value="50.0" type="double" />
   	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
   </node>
-  <!--If we don't have a boom attached but have a kinect -->
-  <node name="boom" pkg="walrus_boomboard_driver" type="dummy_boom_state_publisher" respawn="true" respawn_delay="5" unless="$(arg have_boom)">
-  </node>
-  <!-- Kinect if="$(arg have_boom)"-->
 
-  <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_kinect)">
-  	<arg name="device" value="$(arg kinect_devname)"/>
-  	<arg name="payload" value="$(arg payload)"/> 
+  <!-- Kinect if="$(arg have_boom)"-->
+  
+  <!--	<remap from="$(arg base_name)/depth_rect/camera_info" to="$(arg payload)/$(arg kinect_devname)/depth_rect/camera_info" />
+  <remap from="$(arg base_name)/depth_rect/image" to="$(arg payload)/$(arg kinect_devname)/depth_rect/image" />
+  <remap from="$(arg base_name)/depth_rect/image_rect/compressedDepth" to="$(arg payload)/$(arg kinect_devname)/depth_rect/image"/>
+  
+  <remap from="$(arg base_name)/ir_rect/camera_info" to="$(arg payload)/$(arg kinect_devname)/ir_rect/camera_info" />
+  <remap from="$(arg base_name)/ir_rect/image" to="$(arg payload)/$(arg kinect_devname)/ir_rect/image" />
+  <remap from="$(arg base_name)/ir_rect/image/compressed" to="$(arg payload)/$(arg kinect_devname)/ir_rect/image/compressed"/>
+  <remap from="/$(arg base_name)" to="/$(arg payload)/$(arg kinect_devname)" /> -->
+  <include file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" if="$(arg have_boom)">
+  	<arg name="base_name" value="$(arg base_name)"/>
   </include>
   
   

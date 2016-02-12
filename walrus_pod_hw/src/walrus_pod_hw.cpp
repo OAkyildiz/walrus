@@ -81,12 +81,12 @@ namespace walrus_pod_hw
 	    registerInterface(&aei_);
 	    
 	    try {
-	      controllers[FRONT_CONTROLLER]->open(controller_devices[FRONT_CONTROLLER]);
+	      controllers[FRONT_CONTROLLER]->open(controller_devices[FRONT_CONTROLLER], true);
 	    } catch (Exception& e) {
 	      ROS_ERROR_STREAM("Front Roboteq driver error: " << e.what());
 	    }
 	    try {
-	      controllers[BACK_CONTROLLER]->open(controller_devices[BACK_CONTROLLER]);
+	      controllers[BACK_CONTROLLER]->open(controller_devices[BACK_CONTROLLER], false);
 	    } catch (Exception& e) {
 	      ROS_ERROR_STREAM("Back Roboteq driver error: " << e.what());
 	    }

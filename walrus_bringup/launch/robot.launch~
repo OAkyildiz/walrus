@@ -1,37 +1,41 @@
 <!-- Bringup file for the robot -->
 <launch>
   <arg name="have_boom" default="true"/>
-  <arg name="have_oryx_arm" default="true"/>
-  
+  <arg name="have_oryx_arm" default="false"/>
+  <arg name="payload" value="boom"/> 
+  <arg name="kinect_devname" value="kinect"/> <!-- obsolate-->
 
+  <arg name="base_cameras_en" value="false"/> <!--camera_enable flag-->
+  
   <include file="$(find walrus_base_hw)/launch/walrus_base_hw.launch" />
 
   <node name="boom" pkg="walrus_boomboard_driver" type="walrus_boomboard_node" respawn="true" respawn_delay="5" if="$(arg have_boom)">
-    <remap from="boom/joint_states" to="joint_states" />
-    <param name="controller_rate" value="50.0" type="double" />
-    <rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
+  	<remap from="$(arg payload)/joint_states" to="joint_states" />
+  	<param name="controller_rate" value="50.0" type="double" />
+  	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
   </node>
 
-  <!-- Kinect -->
-  <remap from="/boom_kinect/depth_lowres/points" to="/boom/kinect/depth_lowres/points"/>
-  <remap from="/boom_kinect/rgb/image" to="/boom/kinect/rgb/image"/>
-  <remap from="/boom_kinect/rgb/camera_info" to="/boom/kinect/rgb/camera_info"/>
-  <remap from="/boom_kinect/ir/image" to="/boom/kinect/ir/image"/>
-  <remap from="/boom_kinect/ir/camera_info" to="/boom/kinect/ir/camera_info"/>
-  <include ns="boom" file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" if="$(arg have_boom)">
-    <arg name="base_name" value="boom_kinect"/>
+  <!-- Kinect if="$(arg have_boom)"-->
+
+  <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_boom)">
+  	<arg name="device" value="$(arg kinect_devname)"/>
+  	<arg name="payload" value="$(arg payload)"/> 
   </include>
+  
+  
 
   <!-- IMU -->
   <node name="orientus_node" pkg="orientus_driver" type="orientus_node" respawn="true" respawn_delay="5">
     <param name="port" value="/dev/walrus_imu"/>
   </node>
+  
 
-  <node pkg="multi_usb_cam" type="multi_usb_cam_node" name="multi_usb_cam_node" respawn="true" respawn_delay="5">
+  <!--Cameras-->
+  <node pkg="multi_usb_cam" type="multi_usb_cam_node" name="multi_usb_cam_node" respawn="true" respawn_delay="5" if="$(arg base_cameras_en)">
     <rosparam>
       cameras:
         - {name: '/dev/front_camera', topic: 'front_camera/image_raw', frame_id: 'front_camera'}
-        - {name: '/dev/back_camera', topic: 'back_camera/image_raw', frame_id: 'back_camera'}
+        <!--	- {name: '/dev/back_camera', topic: 'back_camera/image_raw', frame_id: 'back_camera'}-->
         - {name: '/dev/bottom_camera', topic: 'bottom_camera/image_raw', frame_id: 'bottom_camera'}
       configs: # Each level of configuration is for number of cameras running concurrently (first is for one camera, second is for two, etc)
         - {width: 1280, height: 720, fps: 30}
@@ -52,8 +56,14 @@
     <param name="ip_address" value="192.168.1.21"/>
   </node>
 
+<!-- Pod init -->
+  <!-- <node name="pod_serial_init" pkg="walrus_pod_controller"
+    cmd="pod-serial-init.sh">
+  </node>-->
+
   <include file="$(find walrus_bringup)/launch/includes/common.launch.xml">
     <arg name="have_boom" default="$(arg have_boom)" />
+    <!--<arg name="have_boom" default="true" />-->
     <arg name="have_oryx_arm" default="$(arg have_oryx_arm)" />
     <arg name="type" value="robot"/>
   </include>

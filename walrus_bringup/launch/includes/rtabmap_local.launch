@@ -1,26 +1,26 @@
 <launch>
   <arg name="ns" default="rtabmap" />
  <!-- Base -->
-  <arg name="tf_main" default="walrus" />
-  <arg name="base" default="base_epos"/>
-  <arg name="ctrl" default="drive_controller" />
-	
+  <arg name="base_tf" default="walrus" /> <!-- obsolate-->
+  <arg name="base" default="base_epos"/>  <!-- obsolate-->
+  <arg name="ctrl" default="drive_controller" /> <!-- obsolate-->
+
  <!-- Sensor -->
+  <arg name="img_mode" default="sd"/>
   <arg name="payload" default="boom"/>
   <arg name="device" default="kinect"/>
 
   <group ns="$(arg ns)">
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
-  	  <!--Base-->
-          <param name="frame_id" type="string" value="($arg tf_main)/base_link"/>
+          <param name="frame_id" type="string" value="walrus/base_footprint"/>
 
           <param name="subscribe_depth" type="bool" value="true"/>
 
-          <remap from="odom" to="/$(arg base)/$(arg ctrl)/odom"/>
-  	  <!--Sensor-->
-          <remap from="rgb/image" to="/$(arg payload)/$(arg device)/color/image_rect"/>
-          <remap from="depth/image" to="/$(arg payload)/$(arg device)/depth/image_rect"/>
-          <remap from="rgb/camera_info" to="/$(arg payload)/$(arg device)/rgb/camera_info"/>
+          <remap from="odom" to="/base_epos/drive_controller/odom"/>
+
+          <remap from="rgb/image" to="/$(arg payload)/$(arg device)/$(arg img_mode)/image_color_rect"/>
+          <remap from="depth/image" to="/$(arg payload)/$(arg device)/$(arg ns)/image_depth_rect"/>
+          <remap from="rgb/camera_info" to="/$(arg payload)/$(arg device)/$(arg img_mode)/camera_info"/>
 
           <param name="queue_size" type="int" value="10"/>
 
