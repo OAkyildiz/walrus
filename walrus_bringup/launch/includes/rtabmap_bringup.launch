@@ -81,16 +81,13 @@
   </group>
   
   <!--Visualization-->
-  <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_kinect)">
+  <include file="$(find walrus_bringup)/launch/includes/rtabmap/local_viz.launch.xml" if="$(arg local_viz)">
   	<arg name="device" 		value="$(arg kinect_devname)"/>
   	<arg name="payload" 	value="$(arg payload)"/> 
   </include>
-  <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_kinect)">
+  <include file="$(find walrus_bringup)/launch/includes/rtabmap/remote_viz.launch.xml" if="$(remote_viz)">
   	<arg name="device" 		value="$(arg kinect_devname)"/>
   	<arg name="payload" 	value="$(arg payload)"/> 
   </include>
-  <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_kinect)">
-  	<arg name="device" 		value="$(arg kinect_devname)"/>
-  	<arg name="payload" 	value="$(arg payload)"/> 
-  </include>
+  
 </launch>
