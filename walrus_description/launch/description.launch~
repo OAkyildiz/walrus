@@ -1,6 +1,0 @@
-<launch>
-  <arg name="have_boom" default="true"/>
-  <arg name="have_oryx_arm" default="false"/>
-  <!--machine name="walrus" address="192.168.1.1" env-loader="/opt/ros/indigo/env.sh"/-->
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find walrus_description)/robots/walrus.urdf.xacro' robot_ns:=/ tf_prefix:=walrus/ robot_name:=walrus have_boom:=$(arg have_boom) have_oryx_arm:=$(arg have_oryx_arm)" machine="walrus"/>
-</launch>

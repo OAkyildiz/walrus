@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
-<!-- This is a hand-made URDF XACRO file for the Microsoft Kinect v2 sensor (Xbox ONE) -->
-<!-- Author: Ozan Akyildiz, 02/11/2016-->
+<!-- This is a hand-made URDF XACRO file for the Microsoft Kinect-2 sensor (Xbox ONE) -->
+<!-- Copyright Universitaet Bremen - Instititute for Artificial Intelligence. Author: Alexis Maldonado -->
+<!-- Modified by: Ozan Akyildiz, 02/11/2016-->
 <!-- License: GPLv3+ -->
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="kinect2"> 
 
-  <xacro:macro name="kinect2" params="parent name *origin tf_prefix">
+  <xacro:macro params="parent *origin name tf_prefix">
 
     <material name="Kinect2Grey">
       <color rgba="0.15 0.15 0.15 1.0"/>
@@ -19,36 +20,54 @@
       <child link="${tf_prefix}_base"/>
     </joint>
     
-    <link name="${tf_prefix}_base">
+    <link name="${tf_prefix}_kinect2_base">
       <visual>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <origin rpy="0 0 0" xyz="0 0 -50"/>
         <geometry>
           <!-- these meshes were exported in mm, so scale back to m -->
           <mesh filename="package://walrus_description/meshes/kinect2/kinect2_centered.stl" scale="0.001 0.001 0.001"/>
         </geometry>
         <material name="Kinect2Grey"/>
       </visual>
+      <!--collision>
+        	<geometry>
+        		<box size = "200 60 50"/>
+        	</geometry>
+        </collision-->
     </link>
     
     <!-- Joint connecting the ir frame to base frame -->
     <joint name="${tf_prefix}_ir_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="0 0 .025"/>
+      <insert_block name="origin"/>
       <parent link="${tf_prefix}_base"/>
       <child link="${tf_prefix}_ir_optical_frame"/>
     </joint>
 
     <link name="${tf_prefix}_ir_optical_frame">
-      
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 25"/>
+        <geometry>
+    		<box size = "0.01 0.01 0.01"/>
+    	</geometry>
+        <material name="Kinect2Grey"/>
+      </visual>
     </link>
     
      <!-- Joint connecting the rgb frame to base frame -->
     <joint name="${tf_prefix}_rgb_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="0 -.100 .025"/>
-      <parent link="${tf_prefix}_base"/>
+      <parent link="${tf_prefix}_ir_optical_frame"/>
       <child link="${tf_prefix}_rgb_optical_frame"/>
     </joint>
     
     <link name="${tf_prefix}_rgb_optical_frame">
+    	<visual>
+    		<origin rpy="0 0 0" xyz="0 100 0"/>
+    		<geometry>
+    			<box size = "0.01 0.01 0.01"/>
+    		</geometry>
+        	<material name="Kinect2Grey"/>
+        </visual>
+        
     </link>
 	
   </xacro:macro>

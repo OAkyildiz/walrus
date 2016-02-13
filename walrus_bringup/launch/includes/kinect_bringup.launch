@@ -7,7 +7,7 @@
   <!--for Interfacing with web server and rtabmap together-->
   <!--First two arg's are obsolate at the moments-->
 
-  <include ns="boom" file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" >
+  <include ns="$(arg payload)" file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" >
     <arg name="base_name" value="$(arg device)"/>
   </include>
 
