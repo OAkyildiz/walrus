@@ -1,0 +1,88 @@
+<launch>
+  <arg name="ns" default="rtabmap" />
+  
+  <!-- Mode selecotrs-->
+  <arg name="local_mapping" default="false" />
+  <arg name="remote_viz" default="false" />
+  <arg name="remote_map" default="false" />
+  
+  <!-- Choose visualization ( For local_mapping)	 -->
+  <arg name="rviz" default="true" />
+  <arg name="rtabmapviz" default="false" /> 
+  
+  <!-- Base -->
+  <arg name="base_tf" default="walrus" /> <!-- obsolate-->
+  <arg name="base" default="base_epos"/>  <!-- obsolate-->
+  <arg name="ctrl" default="drive_controller" /> <!-- obsolate-->
+  <!-- Fixed frame id-->
+  <arg name="frame_id" default="walrus/base_footprint"/>
+  <arg from="odom" to="/base_epos/drive_controller/odom"/>
+  <!-- Sensor -->
+  <!-- Which image resolution to process in rtabmap: sd, qhd, hd -->
+  <arg name="resolution" default="qhd" />
+  <arg name="payload" default="boom"/>
+  <arg name="device" default="kinect"/>
+  
+  <!-- Image topics -->
+  <arg name="rgb_topic" default="/$(arg payload)/$(arg device)/$(arg img_mode)/image_color_rect"/>
+  <arg name="depth_topic" default="/$(arg payload)/$(arg device)/$(arg ns)/image_depth_rect"/>
+  <arg name="camera_info_topic" default="/$(arg payload)/$(arg device)/$(arg img_mode)/camera_info"/>
+
+
+ 
+ 
+  <group ns="$(arg ns)">
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+          <param name="frame_id" type="string" value="$(arg frame_id)"/>
+
+          <param name="subscribe_depth" type="bool" value="true"/>
+
+          <remap from="odom" to="$(arg odom)"/>
+
+          <remap from="rgb/image" to="$(arg rgb_topic)"/>
+          <remap from="depth/image" to="$(arg depth_topic)"/>
+          <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
+
+          <param name="queue_size" type="int" value="10"/>
+
+          <!-- RTAB-Map's parameters -->
+          <param name="RGBD/AngularUpdate" type="string" value="0.01"/>
+          <param name="RGBD/LinearUpdate" type="string" value="0.01"/>
+          <param name="Rtabmap/TimeThr" type="string" value="700"/>
+          <param name="Mem/RehearsalSimilarity" type="string" value="0.45"/>
+          <param name="RGBD/OptimizeFromGraphEnd" type="string" value="true"/>
+    </node>
+  
+     <!-- Corresponding config files -->
+  <arg name="rtabmapviz_cfg"          default="-d $(find rtabmap_ros)/launch/config/rgbd_gui.ini" />
+  <arg name="rviz_cfg"                default="-d $(find rtabmap_ros)/launch/config/rgbd.rviz" />
+   
+  </group>
+    <!-- Visualization RVIZ -->
+  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="$(arg rviz_cfg)"/>
+  <!-- sync cloud with odometry and voxelize the point cloud (for fast visualization in rviz) -->
+  <node if="$(arg rviz)" pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager" output="screen"/>
+  <node if="$(arg rviz)" pkg="nodelet" type="nodelet" name="data_odom_sync" args="load rtabmap_ros/data_odom_sync standalone_nodelet">
+    <remap from="rgb/image_in"       to="/kinect2/$(arg resolution)/image_color_rect"/>
+    <remap from="depth/image_in"     to="/kinect2/$(arg resolution)/image_depth_rect"/>
+    <remap from="rgb/camera_info_in" to="/kinect2/$(arg resolution)/camera_info"/>
+
+    <remap from="odom_in"             to="rtabmap/odom"/>
+
+    <param name="approx_sync" type="bool" value="true"/>
+    
+    <remap from="rgb/image_out"       to="data_odom_sync/image"/>
+    <remap from="depth/image_out"     to="data_odom_sync/depth"/>
+    <remap from="rgb/camera_info_out" to="data_odom_sync/camera_info"/>
+    <remap from="odom_out"            to="odom_sync"/>
+  </node>
+  <node if="$(arg rviz)" pkg="nodelet" type="nodelet" name="points_xyzrgb" args="load rtabmap_ros/point_cloud_xyzrgb standalone_nodelet">
+    <remap from="rgb/image"       to="data_odom_sync/image"/>
+    <remap from="depth/image"     to="data_odom_sync/depth"/>
+    <remap from="rgb/camera_info" to="data_odom_sync/camera_info"/>
+    <remap from="cloud"           to="voxel_cloud" />
+
+    <param name="voxel_size" type="double" value="0.01"/>
+  </node>
+
+</launch>
