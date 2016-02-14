@@ -7,9 +7,10 @@
   
   <arg name="payload" 			default="boom"/> 
   <arg name="kinect_devname" 	default="kinect"/> <!-- obsolate-->
-
-  <arg name="base_cameras_en" 	value="true"/>	<!--camera_enable flag-->
-  <arg name="remote_map" 	value="false"/>	 <!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
+  <arg name="resolution" 		default="qhd"/> <!-- obsolate-->
+  
+  <arg name="base_cameras_en" 	default="true"/>	<!--camera_enable flag-->
+  <arg name="remote_map" 		default="true"/>	 <!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
   
   <!-- Nodes -->
   
@@ -31,9 +32,11 @@
   <!-- Kinect if="$(arg have_boom)"-->
 
   <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_kinect)">
+  	<arg name="resolution"  value="$(arg resolution)"/>
   	<arg name="device" 		value="$(arg kinect_devname)"/>
   	<arg name="payload" 	value="$(arg payload)"/> 
-  	<arg name="remote_map"  value="$(arg remote_map)"/>
+  	<arg name="throttle"  value="$(arg remote_map)"/>
+  	
   </include>
   
   <include file="$(find walrus_bringup)/launch/includes/rtabmap_bringup.launch" unless="$(arg remote_map)">

@@ -1,16 +1,17 @@
   <!-- Kinect -->
 <!-- configured bringup file for kinect-->
 <launch>
-  <arg name="img_mode" default="qhd"/>
-  <arg name="payload" default="boom"/>
-  <arg name="device" default="kinect"/>
+  <arg name="resolution" default="qhd"/>
+  <arg name="payload"	 default="boom"/>
+  <arg name="device"	 default="kinect"/>
   
-  <arg name="throttle" default="false"/>
+  <arg name="throttle"	 default="false"/>
   <!--for Interfacing with web server and rtabmap together-->
   <!--First two arg's are obsolate at the moments-->
 
   <include  ns="$(arg payload)" file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" >
-    <arg name="base_name" value="$(arg device)"/>
+    <arg name="base_name" 	value="$(arg device)"/>
+
   </include>
   
   
@@ -22,18 +23,18 @@
   <arg name="decimation"  default="1"/> <!-- Reduce the image size, e.g., 2 means "width/2 x height/2".-->
 
   <!-- Use same nodelet used by Freenect/OpenNI -->
-  <group ns="throttled_kinect">
-    <node if="$(arg throttle)" pkg="nodelet" type="nodelet" name="data_throttle" args="load rtabmap_ros/data_throttle camera_nodelet_manager" output="screen">
-      <param name="rate" type="double" value="$(arg rate)"/>
-      <param name="decimation" type="int" value="$(arg decimation)"/>
+  <group ns="$(arg payload)">
+    <node if="$(arg throttle)" pkg="nodelet" type="nodelet" name="image_throttle" args="load rtabmap_ros/data_throttle $(arg device)" output="screen">
+      <param name="rate" 		type="double" 		value="$(arg rate)"/>
+      <param name="decimation" 	type="int" 			value="$(arg decimation)"/>
 
-      <remap from="rgb/image_in"       to="/$(arg payload)/$(arg device)/$(arg resolution)/image_color_rect"/>
-      <remap from="depth/image_in"     to="/$(arg payload)/$(arg device)/$(arg resolution)/image_depth_rect"/>
-      <remap from="rgb/camera_info_in" to="/$(arg payload)/$(arg device)/$(arg resolution)/camera_info"/>
+      <remap from="rgb/image_in"      	 to="/$(arg payload)/$(arg device)/$(arg resolution)/image_color_rect"/>
+      <remap from="depth/image_in"     	to="/$(arg payload)/$(arg device)/$(arg resolution)/image_depth_rect"/>
+      <remap from="rgb/camera_info_in" 	to="/$(arg payload)/$(arg device)/$(arg resolution)/camera_info"/>
 
-      <remap from="rgb/image_out"       to="data_throttled_image"/>
-      <remap from="depth/image_out"     to="data_throttled_image_depth"/>
-      <remap from="rgb/camera_info_out" to="data_throttled_camera_info"/>
+      <remap from="rgb/image_out"       to="throttled/image"/>
+      <remap from="depth/image_out"     to="throttled/image_depth"/>
+      <remap from="rgb/camera_info_out" to="throttled/camera_info"/>
     </node>
   </group>      
 
