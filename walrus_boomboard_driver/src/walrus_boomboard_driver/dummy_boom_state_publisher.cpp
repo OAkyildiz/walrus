@@ -34,8 +34,8 @@ int main(int argc, char **argv)
     dummy_state.effort.push_back(0.0) ;
   }
   dummy_state.position[0]=85.0;
-  dummy_state.position[0]=10.0;
-  dummy_state.position[0]=20.0;
+  dummy_state.position[1]=10.0;
+  dummy_state.position[2]=20.0;
   // Startup ROS spinner in background
   ros::AsyncSpinner spinner(1);
   spinner.start();

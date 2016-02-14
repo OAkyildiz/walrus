@@ -10,8 +10,11 @@
   <arg name="resolution" 		default="qhd"/> <!-- obsolate-->
   
   <arg name="base_cameras_en" 	default="true"/>	<!--camera_enable flag-->
-  <arg name="remote_map" 		default="true"/>	 <!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
   
+
+  <arg name="remote_viz"	default="true" />	<!-- if  false, everything happens on WALRUS-->
+  <arg name="remote_map" 	default="false"/>	<!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
+  <arg if="$(arg remote_map)" name="remote_viz" 	default="true" />
   <!-- Nodes -->
   
   <!-- Base Hardware -->
@@ -35,18 +38,19 @@
   	<arg name="resolution"  value="$(arg resolution)"/>
   	<arg name="device" 		value="$(arg kinect_devname)"/>
   	<arg name="payload" 	value="$(arg payload)"/> 
-  	<arg name="throttle"  value="$(arg remote_map)"/>
+  
+  	<arg unless="$(arg remote_viz)" 		name="throttle"  	value="false"/>
+  	<arg if="$(arg remote_viz)" 	name="throttle"  	value="true"/>
   	
   </include>
   
   <include file="$(find walrus_bringup)/launch/includes/rtabmap_bringup.launch" unless="$(arg remote_map)">
   
-  	<arg name="local_viz" 		value="false" />
-  	<arg name="remote_viz"		value="false" />
-  	<arg name="remote_map"		value="$(arg remote_map)" /> 
+
+  	<arg name="remote_viz"		value="$(arg remote_viz)" />
+
   	
-  	<arg name="rviz"			value="true" /> 
-  	<arg name="rtabmapviz"		value="false" /> 
+
   </include>
   
 
