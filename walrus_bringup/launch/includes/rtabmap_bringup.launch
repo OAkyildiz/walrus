@@ -29,7 +29,7 @@
   <arg name="rtabmap_args"			default=""/><!-- delete_db_on_start, udebug -->
   <arg name="launch_prefix"        	default=""/>  
   <arg name="visual_odometry"		value="false"/><!-- Launch rtabmap visual odometry node -->
-  <arg from="odom" 					default="/base_epos/drive_controller/odom"/>
+  <arg name="odom" 					default="/base_epos/drive_controller/odom"/>
   
   
 
@@ -40,9 +40,9 @@
   <arg name="device" 			default="kinect"/>
   
   <!-- RGB-D topics -->
-  <arg name="rgb_topic" 		default="/$(arg payload)/$(arg device)/$(arg img_mode)/image_color_rect"/>
-  <arg name="depth_topic" 		default="/$(arg payload)/$(arg device)/$(arg img_mode)/image_depth_rect"/>
-  <arg name="camera_info_topic" default="/$(arg payload)/$(arg device)/$(arg img_mode)/camera_info"/>
+  <arg name="rgb_topic" 		default="/$(arg payload)/$(arg device)/$(arg resolution)/image_color_rect"/>
+  <arg name="depth_topic" 		default="/$(arg payload)/$(arg device)/$(arg resolution)/image_depth_rect"/>
+  <arg name="camera_info_topic" default="/$(arg payload)/$(arg device)/$(arg resolution)/camera_info"/>
 
   
   <arg if="$(arg  remote_map)" name="compressed"		default="true"/>
@@ -85,7 +85,7 @@
   	<arg name="device" 		value="$(arg kinect_devname)"/>
   	<arg name="payload" 	value="$(arg payload)"/> 
   </include>
-  <include file="$(find walrus_bringup)/launch/includes/rtabmap/remote_viz.launch.xml" if="$(remote_viz)">
+  <include file="$(find walrus_bringup)/launch/includes/rtabmap/remote_viz.launch.xml" if="$(arg remote_viz)">
   	<arg name="device" 		value="$(arg kinect_devname)"/>
   	<arg name="payload" 	value="$(arg payload)"/> 
   </include>
