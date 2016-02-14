@@ -9,7 +9,7 @@
   <arg name="kinect_devname" 	default="kinect"/> <!-- obsolate-->
 
   <arg name="base_cameras_en" 	value="true"/>	<!--camera_enable flag-->
-  <arg name="remote_map" 	value="false"/>			<!--launch rtabmap?-->
+  <arg name="remote_map" 	value="false"/>	 <!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
   
   <!-- Nodes -->
   
