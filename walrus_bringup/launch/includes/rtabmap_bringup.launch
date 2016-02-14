@@ -77,6 +77,11 @@
           <param name="Rtabmap/TimeThr" type="string" value="700"/>
           <param name="Mem/RehearsalSimilarity" type="string" value="0.45"/>
           <param name="RGBD/OptimizeFromGraphEnd" type="string" value="true"/>
+          
+          
+          <!--arg name="rviz" 									value="$(arg rviz)" />
+ 		  <arg if="$(arg rviz)" 		name="rtabmapviz" 		value="false" /> 
+ 		  <arg unless="$(arg rviz)" 	name="rtabmapviz" 		value="true" /--> 
     </node>
   </group>
   
