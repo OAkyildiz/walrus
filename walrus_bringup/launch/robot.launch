@@ -9,7 +9,7 @@
   <arg name="kinect_devname" 	default="kinect"/> <!-- obsolate-->
 
   <arg name="base_cameras_en" 	value="true"/>	<!--camera_enable flag-->
-  <arg name="mapping" 	value="true"/>			<!--launch rtabmap?-->
+  <arg name="remote_map" 	value="false"/>			<!--launch rtabmap?-->
   
   <!-- Nodes -->
   
@@ -33,13 +33,14 @@
   <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_kinect)">
   	<arg name="device" 		value="$(arg kinect_devname)"/>
   	<arg name="payload" 	value="$(arg payload)"/> 
+  	<arg name="remote_map"  value="$(arg remote_map)"/>
   </include>
   
-  <include file="$(find walrus_bringup)/launch/includes/rtabmap_bringup.launch" if="$(arg mapping)">
+  <include file="$(find walrus_bringup)/launch/includes/rtabmap_bringup.launch" unless="$(arg remote_map)">
   
   	<arg name="local_viz" 		value="false" />
   	<arg name="remote_viz"		value="false" />
-  	<arg name="remote_map"		value="false" /> 
+  	<arg name="remote_map"		value="$(arg remote_map)" /> 
   	
   	<arg name="rviz"			value="true" /> 
   	<arg name="rtabmapviz"		value="false" /> 
