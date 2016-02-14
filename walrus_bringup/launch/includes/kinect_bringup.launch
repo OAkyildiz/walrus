@@ -28,7 +28,7 @@
       <param name="rate" 		type="double" 		value="$(arg rate)"/>
       <param name="decimation" 	type="int" 			value="$(arg decimation)"/>
 
-      <remap from="rgb/image_in"      	 to="/$(arg payload)/$(arg device)/$(arg resolution)/image_color_rect"/>
+      <remap from="rgb/image_in"      	to="/$(arg payload)/$(arg device)/$(arg resolution)/image_color_rect"/>
       <remap from="depth/image_in"     	to="/$(arg payload)/$(arg device)/$(arg resolution)/image_depth_rect"/>
       <remap from="rgb/camera_info_in" 	to="/$(arg payload)/$(arg device)/$(arg resolution)/camera_info"/>
 

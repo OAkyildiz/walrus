@@ -13,8 +13,8 @@
   
 
   <arg name="remote_viz"	default="true" />	<!-- if  false, everything happens on WALRUS-->
-  <arg name="remote_map" 	default="false"/>	<!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
-  <arg if="$(arg remote_map)" name="remote_viz" 	default="true" />
+  <arg name="remote_map" 	default="true"/>	<!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
+  <!--arg if="$(arg remote_map)" name="remote_viz" 	value="true" /-->
   <!-- Nodes -->
   
   <!-- Base Hardware -->

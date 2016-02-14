@@ -1,27 +1,57 @@
 <!-- Bringup file for the robot -->
 <launch>
-  <arg name="have_boom" default="true"/>
-  <arg name="have_oryx_arm" default="false"/>
-  <arg name="payload" value="boom"/> 
-  <arg name="kinect_devname" value="kinect"/> <!-- obsolate-->
 
-  <arg name="base_cameras_en" value="false"/> <!--camera_enable flag-->
+  <arg name="have_kinect"		default="true"/>
+  <arg name="have_boom"			default="true"/>
+  <arg name="have_oryx_arm" 	default="false"/>
   
-  <include file="$(find walrus_base_hw)/launch/walrus_base_hw.launch" />
+  <arg name="payload" 			default="boom"/> 
+  <arg name="kinect_devname" 	default="kinect"/> <!-- obsolate-->
+  <arg name="resolution" 		default="qhd"/> <!-- obsolate-->
+  
+  <arg name="base_cameras_en" 	default="true"/>	<!--camera_enable flag-->
+  
 
+  <arg name="remote_viz"	default="false" />	<!-- if  false, everything happens on WALRUS-->
+  <arg name="remote_map" 	default="false"/>	<!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
+  <!--arg if="$(arg remote_map)" name="remote_viz" 	value="true" /-->
+  <!-- Nodes -->
+  
+  <!-- Base Hardware -->
+  <include file="$(find walrus_base_hw)/launch/walrus_base_hw.launch" />
+  
+  <!-- Boomboard -->
   <node name="boom" pkg="walrus_boomboard_driver" type="walrus_boomboard_node" respawn="true" respawn_delay="5" if="$(arg have_boom)">
+  
   	<remap from="$(arg payload)/joint_states" to="joint_states" />
   	<param name="controller_rate" value="50.0" type="double" />
   	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
   </node>
-
+  
+  
+  <!--If we don't have a boom attached but have a kinect -->
+  <node name="boom" pkg="walrus_boomboard_driver" type="dummy_boom_state_publisher" respawn="true" respawn_delay="5" unless="$(arg have_boom)">
+  </node>
   <!-- Kinect if="$(arg have_boom)"-->
 
-  <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_boom)">
-  	<arg name="device" value="$(arg kinect_devname)"/>
-  	<arg name="payload" value="$(arg payload)"/> 
+  <include file="$(find walrus_bringup)/launch/includes/kinect_bringup.launch" if="$(arg have_kinect)">
+  	<arg name="resolution"  value="$(arg resolution)"/>
+  	<arg name="device" 		value="$(arg kinect_devname)"/>
+  	<arg name="payload" 	value="$(arg payload)"/> 
+  
+  	<arg unless="$(arg remote_viz)" 		name="throttle"  	value="false"/>
+  	<arg if="$(arg remote_viz)" 	name="throttle"  	value="true"/>
+  	
   </include>
   
+  <include file="$(find walrus_bringup)/launch/includes/rtabmap_bringup.launch" unless="$(arg remote_map)">
+  
+
+  	<arg name="remote_viz"		value="$(arg remote_viz)" />
+
+  	
+
+  </include>
   
 
   <!-- IMU -->

@@ -18,24 +18,24 @@
   <!--# This is where correct camera topics are resolved ##############################-->
   
  
-  	<!--if="$(arg remote_viz)" -->	
-  	<arg name="rgb_topic" 		default="/$(arg payload)/$(arg device)/$(arg resolution)/image_color_rect"/>
-  	<arg name="depth_topic" 		default="/$(arg payload)/$(arg device)/$(arg resolution)/image_depth_rect"/>
-  	<arg name="camera_info_topic" default="/$(arg payload)/$(arg device)/$(arg resolution)/camera_info"/>
+  	<!--unless="$(arg remote_viz)" -->	
+  	<arg unless="$(arg remote_viz)" name="rgb_topic" 		default="/$(arg payload)/$(arg device)/$(arg resolution)/image_color_rect"/>
+  	<arg unless="$(arg remote_viz)" name="depth_topic" 		default="/$(arg payload)/$(arg device)/$(arg resolution)/image_depth_rect"/>
+  	<arg unless="$(arg remote_viz)" name="camera_info_topic" default="/$(arg payload)/$(arg device)/$(arg resolution)/camera_info"/>
   
 	<!--No  Compress -->
-  	<arg name="compressed"		default="false"/>
+  	<arg unless="$(arg remote_viz)" name="compressed"		default="false"/>
 
 
-  <group if="$(arg remote_viz)">
 
-  		<arg name="rgb_topic" 		default="/$(arg payload)/throttled/image_color_rect"/>
-  		<arg name="depth_topic" 		default="/$(arg payload)/throttled/image_depth_rect"/>
-  		<arg name="camera_info_topic" default="/$(arg payload)/throttled/camera_info"/>
+	<!--if="$(arg remote_viz)" -->	
+ 	<arg if="$(arg remote_viz)" name="rgb_topic" 		value="/$(arg payload)/throttled/image"/>
+ 	<arg if="$(arg remote_viz)" name="depth_topic" 		value="/$(arg payload)/throttled/image_depth"/>
+  	<arg if="$(arg remote_viz)" name="camera_info_topic" value="/$(arg payload)/throttled/camera_info"/>
   
-		<!-- Compress -->
-  		<arg name="compressed"		default="true"/>
-  </group>
+	<!-- Compress -->
+  	<arg if="$(arg remote_viz)" name="compressed"		value="true"/>
+
 
  
   <!--# Some config ##################################################################-->
@@ -44,11 +44,11 @@
   <arg name="compress_method" 	default="compressed"/>   
   
   <!-- Choose visualization (For local mapping)	 -->
-  <arg if="$(arg remote_viz)" 		name="rviz"			default="false" />
-  <arg unless="$(arg remote_viz)" 	name="rviz"			default="true" />
+  <arg if="$(arg remote_viz)" 		name="rviz"			value="false" />
+  <arg unless="$(arg remote_viz)" 	name="rviz"			value="true" />
   
   <!-- Corresponding config file -->
-  <arg name="rviz_cfg"          default="find walrus_bringup)/rviz/local_viz.rviz" /> <!-- Set a new .rviz file that includes robot model-->
+  <arg name="rviz_cfg"          default="-d $(find walrus_bringup)/rviz/local_viz.rviz" /> <!-- Set a new .rviz file that includes robot model-->
   
   
   <!--################################################################################-->
