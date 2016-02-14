@@ -58,7 +58,7 @@
   <group ns="$(arg ns)">
   	<!--rtabmap-->
   
-    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" unless="$(arg remote_map)" args="--delete_db_on_start">
+    <node unless="$(arg remote_map)" name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
           <param name="frame_id" type="string" value="$(arg frame_id)"/>
 
           <param name="subscribe_depth" type="bool" value="true"/>
