@@ -81,7 +81,7 @@ namespace walrus_pod_hw
 	    registerInterface(&aei_);
 	    
 	    try {
-	      controllers[FRONT_CONTROLLER]->open(controller_devices[FRONT_CONTROLLER], true);
+	      controllers[FRONT_CONTROLLER]->open(controller_devices[FRONT_CONTROLLER], false);
 	    } catch (Exception& e) {
 	      ROS_ERROR_STREAM("Front Roboteq driver error: " << e.what());
 	    }

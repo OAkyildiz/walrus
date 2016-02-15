@@ -1,6 +1,6 @@
 #----------------
 
-SUBSYSTEM=="tty", ATTRS{idVendor}=="20d2", ATTRS{idProduct}=="5740", MODE="0666", ATTRS{serial}=="6D8517894848", SYMLINK+="walrus_front_pod_controller", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{MTP_NO_PROBE}="1"
-#KERNEL=="ttyUSB0", SUBSYSTEM=="tty", GROUP+="DIALOUT", MODE="0666", SYMLINK+="walrus_front_pod_controller"
+#SUBSYSTEM=="tty", ATTRS{idVendor}=="20d2", ATTRS{idProduct}=="5740", MODE="0666", ATTRS{serial}=="6D8517894848", SYMLINK+="walrus_front_pod_controller", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{MTP_NO_PROBE}="1"
+KERNEL=="ttyUSB0", SUBSYSTEM=="tty", GROUP+="DIALOUT", MODE="0666", SYMLINK+="walrus_front_pod_controller"
 KERNEL=="ttyS1", SUBSYSTEM=="tty", GROUP+="DIALOUT", MODE="0666", SYMLINK+="walrus_back_pod_controller"
 #----------------

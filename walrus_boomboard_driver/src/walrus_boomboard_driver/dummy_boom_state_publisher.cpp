@@ -29,13 +29,13 @@ int main(int argc, char **argv)
   dummy_state.name.push_back("walrus/boom/tilt_joint");
   
   for(int i=0; i<3; i++){
-    dummy_state.position.push_back(0.0);
+    //dummy_state.position.push_back(0.0);
     dummy_state.velocity.push_back(0.0);
     dummy_state.effort.push_back(0.0) ;
   }
-  dummy_state.position[0]=85.0;
-  dummy_state.position[1]=10.0;
-  dummy_state.position[2]=20.0;
+  dummy_state.push_back(1.5715);
+  dummy_state.push_back(0.0);
+  dummy_state.push_back(0.3);
   // Startup ROS spinner in background
   ros::AsyncSpinner spinner(1);
   spinner.start();

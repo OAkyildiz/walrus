@@ -12,8 +12,8 @@
   <arg name="base_cameras_en" 	default="true"/>	<!--camera_enable flag-->
   
 
-  <arg name="remote_viz"	default="false" />	<!-- if  false, everything happens on WALRUS-->
-  <arg name="remote_map" 	default="false"/>	<!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
+  <arg name="remote_viz"	default="true" />	<!-- if  false, everything happens on WALRUS-->
+  <arg name="remote_map" 	default="true"/>	<!--launch rtabmap?--> <!--This gets double checked, but *whispers* It's OK"-->
   <!--arg if="$(arg remote_map)" name="remote_viz" 	value="true" /-->
   <!-- Nodes -->
   
@@ -40,7 +40,7 @@
   	<arg name="payload" 	value="$(arg payload)"/> 
   
   	<arg unless="$(arg remote_viz)" 		name="throttle"  	value="false"/>
-  	<arg if="$(arg remote_viz)" 	name="throttle"  	value="true"/>
+  	<arg if="$(arg remote_viz)" 	name="throttle"  	value="false"/>
   	
   </include>
   
