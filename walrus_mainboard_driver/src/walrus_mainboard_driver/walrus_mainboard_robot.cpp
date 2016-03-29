@@ -80,6 +80,10 @@ namespace walrus_mainboard_driver
         diagnostic_updater.add("Power Systems", this, &MainBoardRobot::power_diagnostic_callback);
         diagnostic_updater.add("Left Drive Motor Temperature", this, &MainBoardRobot::left_drive_temp_diagnostic_callback);
         diagnostic_updater.add("Right Drive Motor Temperature", this, &MainBoardRobot::right_drive_temp_diagnsotic_callback);
+        }
+    
+    bool MainBoardRobot::init()
+    {
         
         //Setup publishers and subscribers to communicate with the embedded board
         to_board = nh_.advertise<walrus_firmware_msgs::MainBoardControl>("main_board/PC_to_board_control", 1000);

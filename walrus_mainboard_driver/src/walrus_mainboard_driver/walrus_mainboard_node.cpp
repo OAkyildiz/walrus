@@ -16,9 +16,8 @@ int main( int argc, char** argv ) {
   ros::NodeHandle nh;
   ros::NodeHandle pnh("~");
 
-
-  double controller_rate;
-  pnh.param<double>("controller_rate", controller_rate, 5);
+  double mainboard_rate;
+  pnh.param<double>("mainboard_rate", mainboard_rate, 5);
 
   std::string port;
   pnh.param<std::string>("port", port, "/dev/walrus_main_board");
@@ -37,18 +36,16 @@ int main( int argc, char** argv ) {
   ros::AsyncSpinner spinner(4);
   spinner.start();
 
-controller_manager::ControllerManager cm(&robot, pnh);
-  ros::Timer controller_load_timer = walrus_base_hw::createControllerLoadTimer(pnh, &cm);
+  if(!robot.init()) {
+    ROS_FATAL("Failed to initailize robot");
+    return 1;
+  }
 
-  walrus_base_hw::RealtimeRate rate(controller_rate);
+  walrus_base_hw::RealtimeRate rate(mainboard_rate);
   while (ros::ok()) {
     ros::Duration dt;
     ros::Time now;
     rate.beginLoop(&now, &dt);
-
-    robot.read(dt);
-    cm.update(now, dt);
-    robot.write(dt);
 
     robot.update_diagnostics();
 

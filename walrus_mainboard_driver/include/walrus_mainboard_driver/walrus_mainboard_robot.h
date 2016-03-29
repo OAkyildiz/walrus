@@ -44,6 +44,12 @@ namespace walrus_mainboard_driver
         public:
             MainBoardRobot(ros::NodeHandle& nh, ros::NodeHandle& pnh);
             
+            bool init();
+      		
+      		//communications stubs for future implementation
+      		void read(ros::Duration dt){} // .read() stub
+            void write(ros::Duration dt){} // .write() stub
+      
             void update_diagnostics();
             
         private:

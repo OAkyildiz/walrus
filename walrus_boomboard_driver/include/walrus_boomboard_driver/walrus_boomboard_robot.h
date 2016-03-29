@@ -39,6 +39,7 @@ namespace walrus_boomboard_driver
     {
         public:
             BoomBoardRobot(ros::NodeHandle& nh, ros::NodeHandle& pnh);
+            
             bool init();
             void read(ros::Duration dt);
             void write(ros::Duration dt);
