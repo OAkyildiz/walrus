@@ -31,7 +31,7 @@ int main( int argc, char** argv ) {
   walrus_boomboard_driver::BoomBoardRobot robot(nh, pnh);
 
   // Startup ROS spinner in background
-  ros::AsyncSpinner spinner(1);
+  ros::AsyncSpinner spinner(2);
   spinner.start();
 
   if(!robot.init()) {

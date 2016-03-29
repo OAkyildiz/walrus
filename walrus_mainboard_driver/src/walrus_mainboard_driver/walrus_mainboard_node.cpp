@@ -23,11 +23,25 @@ int main( int argc, char** argv ) {
   walrus_mainboard_driver::MainBoardRobot robot(nh, pnh);
 
   // Startup ROS spinner in background
-  ros::AsyncSpinner spinner(1);
+  ros::AsyncSpinner spinner(4);
   spinner.start();
 
+controller_manager::ControllerManager cm(&robot, pnh);
+  ros::Timer controller_load_timer = walrus_base_hw::createControllerLoadTimer(pnh, &cm);
+
+  walrus_base_hw::RealtimeRate rate(controller_rate);
   while (ros::ok()) {
+    ros::Duration dt;
+    ros::Time now;
+    rate.beginLoop(&now, &dt);
+
+    robot.read(dt);
+    cm.update(now, dt);
+    robot.write(dt);
+
     robot.update_diagnostics();
+
+    rate.sleep();
   }
   return 0;
 }
