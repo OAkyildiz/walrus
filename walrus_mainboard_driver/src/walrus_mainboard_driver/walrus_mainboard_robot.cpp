@@ -7,7 +7,7 @@ namespace walrus_mainboard_driver
 {
 
     MainBoardRobot::MainBoardRobot(ros::NodeHandle& nh, ros::NodeHandle& pnh)
-    : nh_(nh), pnh_(pnh), diagnostic_updater(nh, pnh), last_sensor_data(0,0), sensor_data_timeout(3), led_scale(255)
+    : WalrusRobotBase(nh, pnh), diagnostic_updater(nh, pnh), last_sensor_data(0,0), sensor_data_timeout(3), led_scale(255)
     {
         //Load parameters    
         pnh.param("frontleft_motor_temp_id", FL_POD_MOTOR_TEMP, 1);   

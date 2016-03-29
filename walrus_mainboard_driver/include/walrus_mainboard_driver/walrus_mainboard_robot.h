@@ -47,7 +47,7 @@ namespace walrus_mainboard_driver
             void update_diagnostics();
             
         private:
-            ros::NodeHandle nh_, pnh_;
+
         
             diagnostic_updater::Updater diagnostic_updater;
             
