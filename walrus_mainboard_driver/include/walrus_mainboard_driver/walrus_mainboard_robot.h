@@ -4,9 +4,14 @@
 
 #include <ros/ros.h>
 #include <math.h>
+
 #include <diagnostic_updater/diagnostic_updater.h>
+
 #include <walrus_firmware_msgs/MainBoardSensorData.h>
 #include <walrus_firmware_msgs/MainBoardControl.h>
+
+#include <walrus_base_hw/walrus_robot_base.h>
+
 #include <std_msgs/Float64.h>
 #include <string.h>
 #include <boost/lexical_cast.hpp>
@@ -34,7 +39,7 @@ namespace walrus_mainboard_driver
         bool shutdown;
     };
     
-  class MainBoardRobot
+  class MainBoardRobot : public walrus_base_hw::WalrusRobotBase
     {
         public:
             MainBoardRobot(ros::NodeHandle& nh, ros::NodeHandle& pnh);

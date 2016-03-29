@@ -4,17 +4,23 @@
 
 #include <ros/ros.h>
 #include <math.h>
+
+#include <diagnostic_updater/diagnostic_updater.h>
+
 #include <hardware_interface/actuator_command_interface.h>
 #include <hardware_interface/actuator_state_interface.h>
 #include <hardware_interface/robot_hw.h>
+
 #include <transmission_interface/robot_transmissions.h>
 #include <transmission_interface/transmission_interface_loader.h>
-#include <diagnostic_updater/diagnostic_updater.h>
+
 #include <walrus_firmware_msgs/BoomBoardHighSpeedControl.h>
 #include <walrus_firmware_msgs/BoomBoardHighSpeedFeedback.h>
 #include <walrus_firmware_msgs/BoomBoardLowSpeedData.h>
 #include <walrus_firmware_msgs/BoomBoardControl.h>
+
 #include <walrus_base_hw/walrus_robot_base.h>
+
 #include <std_msgs/Float64.h>
 #include <std_msgs/Bool.h>
 #include <string.h>

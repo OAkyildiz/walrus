@@ -16,7 +16,6 @@ int main( int argc, char** argv ) {
   double controller_rate;
   pnh.param<double>("controller_rate", controller_rate, 50);
 
-
   std::string port;
   pnh.param<std::string>("port", port, "/dev/walrus_boom_board");
   int baud;
