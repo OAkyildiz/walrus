@@ -93,6 +93,8 @@ namespace walrus_mainboard_driver
         bottom_led = nh_.subscribe<std_msgs::Float64>("bottom_led", 1000, boost::bind(&MainBoardRobot::led_callback, this, _1, BOTTOM_CAM_LED-1));
         from_board = nh_.subscribe("main_board/board_to_PC_control", 1000, &MainBoardRobot::from_board_callback, this);
         sensor_data = nh_.subscribe("main_board/sensor_data", 1000, &MainBoardRobot::sensor_data_callback, this);    
+
+	return true;
     }
     
     void MainBoardRobot::update_diagnostics()
