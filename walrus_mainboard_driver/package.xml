@@ -19,11 +19,18 @@
   <build_depend>walrus_firmware_msgs</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>rosserial_server</build_depend>
+  <build_depend>controller_manager</build_depend>
+  <build_depend>hardware_interface</build_depend>
+  <build_depend>walrus_base_hw</build_depend>
+    
   <run_depend>roscpp</run_depend>
   <run_depend>diagnostic_updater</run_depend>
   <run_depend>walrus_firmware_msgs</run_depend>
   <run_depend>std_msgs</run_depend>
   <run_depend>rosserial_server</run_depend>
+  <run_depend>controller_manager</run_depend>
+  <run_depend>hardware_interface</run_depend>
+  <run_depend>walrus_base_hw</run_depend>
 
   <export>
   </export>

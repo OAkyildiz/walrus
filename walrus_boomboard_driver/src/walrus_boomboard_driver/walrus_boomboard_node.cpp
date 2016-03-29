@@ -1,9 +1,13 @@
 #include <ros/ros.h>
 #include <ros/spinner.h>
+
 #include "walrus_boomboard_driver/walrus_boomboard_robot.h"
+
 #include "walrus_base_hw/realtime_rate.h"
 #include "walrus_base_hw/util.h"
+
 #include <controller_manager/controller_manager.h>
+
 #include <boost/asio.hpp>
 #include <rosserial_server/serial_session.h>
 #include <boost/assign/list_of.hpp>

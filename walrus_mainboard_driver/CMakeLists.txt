@@ -6,8 +6,11 @@ project(walrus_mainboard_driver)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   walrus_firmware_msgs
+  hardware_interface
+  controller_manager
   roscpp
   diagnostic_updater
+  walrus_base_hw
   std_msgs
   rosserial_server
 )
