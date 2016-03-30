@@ -11,6 +11,7 @@
 
   <include  ns="$(arg payload)" file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" >
     <arg name="base_name" 	value="$(arg device)"/>
+    <arg name="fps_limit"         default="15.0"/>
 
   </include>
   
