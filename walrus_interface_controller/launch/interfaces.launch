@@ -1,11 +1,12 @@
 <launch>
   <node name="interface_manager" pkg="walrus_interface_controller" type="interface_manager_node">
     <rosparam>
-      controllers: ['local_joy_interface', 'web_interface']
+      controllers: ['local_joy_interface', 'web_interface', 'driverstation_interface']
     </rosparam>
   </node>
 
   <include file="$(find walrus_interface_controller)/launch/web_interface.launch" ns="web_interface" />
   <include file="$(find walrus_interface_controller)/launch/local_joy.launch" ns="local_joy_interface" />
+  <include file="$(find walrus_interface_controller)/launch/remote_joy.launch" ns="driverstation_interface" />
 
 </launch>

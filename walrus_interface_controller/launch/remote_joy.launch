@@ -1,0 +1,6 @@
+<launch>
+  <node name="interface_controller" pkg="walrus_interface_controller" type="interface_controller_node">
+    <param name="have_joystick_controller" value="true" />
+  </node>
+
+</launch>
