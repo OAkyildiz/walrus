@@ -2,6 +2,7 @@
 #include <boost/assign/list_of.hpp>
 
 namespace walrus_pod_hw
+
 {
   using namespace device_driver;
 
@@ -37,8 +38,9 @@ namespace walrus_pod_hw
         pnh.param<bool>("backleft_pod_motor_reverse", POD_MOTOR_REV[BL_POD], false);
         pnh.param<double>("pod_output_torque_per_amp", OUTPUT_TORQUE_PER_AMP, 1.0);
         pnh.param<double>("pod_motor_current_high_above", POD_MOTOR_CURRENT_HIGH_ABOVE, -1);
-	pnh.param<double>("pod_motor_limit", POD_MOTOR_LIMIT, 1);
-        
+		pnh.param<double>("pod_motor_limit", POD_MOTOR_LIMIT, 1);
+		//debug
+        pnh.param<bool>("surpress_drive_errors",SURPRESS_ERRORS, false);
         //Setup pod actuator interfaces
         hardware_interface::ActuatorStateHandle state_handleFL("walrus/front_left_pod_joint_actuator", &pod_position[FL_POD], &pod_velocity[FL_POD], &pod_effort[FL_POD]);
         asi_.registerHandle(state_handleFL);
@@ -83,12 +85,14 @@ namespace walrus_pod_hw
 	    try {
 	      controllers[FRONT_CONTROLLER]->open(controller_devices[FRONT_CONTROLLER], false);
 	    } catch (Exception& e) {
-	      ROS_ERROR_STREAM("Front Roboteq driver error: " << e.what());
+	    	if(!SURPRESS_ERRORS)
+	      		ROS_ERROR_STREAM("Front Roboteq driver error: " << e.what());
 	    }
 	    try {
 	      controllers[BACK_CONTROLLER]->open(controller_devices[BACK_CONTROLLER], false);
 	    } catch (Exception& e) {
-	      ROS_ERROR_STREAM("Back Roboteq driver error: " << e.what());
+	    	if(!SURPRESS_ERRORS)
+	      		ROS_ERROR_STREAM("Back Roboteq driver error: " << e.what());
 	    }
 
 
@@ -117,7 +121,8 @@ namespace walrus_pod_hw
 	      controllers[l & CONTROLLER_MASK]->setPower(POD_CHANNEL[l], pod_effort_cmd[l] * POD_MOTOR_LIMIT * (POD_MOTOR_REV[l] ? -1 : 1));
 	    } catch (Exception& e) {
 	      error_cnt++;
-	      ROS_ERROR_STREAM("Back Roboteq driver error: " << e.what());
+	      if(!SURPRESS_ERRORS)
+	      	ROS_ERROR_STREAM("Back Roboteq driver error: " << e.what());
 	    }
         }
     }
@@ -150,7 +155,8 @@ namespace walrus_pod_hw
 	      controllers[l & CONTROLLER_MASK]->getCurrent(POD_CHANNEL[l], pod_current[l]);
             } catch (Exception& e) {
 	      error_cnt++;
-	      ROS_ERROR_STREAM("Back Roboteq driver error: " << e.what());
+	      if(!SURPRESS_ERRORS)
+		      ROS_ERROR_STREAM("Back Roboteq driver error: " << e.what());
 	    }
 	    pod_effort[l] = pod_current[l] * OUTPUT_TORQUE_PER_AMP;
         }        

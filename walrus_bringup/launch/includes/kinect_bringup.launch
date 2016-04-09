@@ -5,7 +5,7 @@
   <arg name="payload"	 default="boom"/>
   <arg name="device"	 default="kinect"/>
   
-  <arg name="throttle"	 default="false"/>
+  <arg name="throttle"	 default="true"/>
   <!--for Interfacing with web server and rtabmap together-->
   <!--First two arg's are obsolate at the moments-->
 
@@ -25,7 +25,7 @@
 
   <!-- Use same nodelet used by Freenect/OpenNI -->
   <group ns="$(arg payload)">
-    <node if="$(arg throttle)" pkg="nodelet" type="nodelet" name="image_throttle" args="load rtabmap_ros/data_throttle $(arg device)" output="screen">
+    <node if="$(arg throttle)" pkg="nodelet" type="nodelet" name="image_throttle" args="load rtabmap_ros/data_throttle $(arg device)">
       <param name="rate" 		type="double" 		value="$(arg rate)"/>
       <param name="decimation" 	type="int" 			value="$(arg decimation)"/>
 

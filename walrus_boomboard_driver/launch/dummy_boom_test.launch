@@ -1,0 +1,10 @@
+<launch>
+<!-- Kinect if="$(arg have_boom)"-->
+<!--If we don't have a boom attached but have a kinect -->
+  <node name="boom" pkg="walrus_boomboard_driver" type="dummy_boom_state_publisher" respawn="true" respawn_delay="5" >
+    <remap from="boom/joint_states" to="joint_states" />
+  	<param name="controller_rate" value="50.0" type="double" />
+  	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
+  </node>
+  <!--/ Kinect if="$(arg have_boom)"-->
+</launch>

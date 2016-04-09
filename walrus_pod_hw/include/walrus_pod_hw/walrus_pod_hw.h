@@ -64,6 +64,7 @@ namespace walrus_pod_hw
        double OUTPUT_TORQUE_PER_AMP; 
        double POD_MOTOR_CURRENT_HIGH_ABOVE;
        double POD_MOTOR_LIMIT;
+       bool SURPRESS_ERRORS;
  
     };
 

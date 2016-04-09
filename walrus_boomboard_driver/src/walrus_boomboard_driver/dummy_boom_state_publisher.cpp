@@ -14,7 +14,7 @@ int main(int argc, char **argv)
   
   ros::Publisher dummy_state_pub = dh.advertise<sensor_msgs::JointState>("/joint_states", 1000);
 
-  walrus_base_hw::RealtimeRate rate(50);
+  walrus_base_hw::RealtimeRate rate(20);
   //create msg
   sensor_msgs::JointState dummy_state;
   //resize fields
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     dummy_state.velocity.push_back(0.0);
     dummy_state.effort.push_back(0.0) ;
   }
-  dummy_state.position.push_back(1.5715);
+  dummy_state.position.push_back(0.1);
   dummy_state.position.push_back(0.0);
   dummy_state.position.push_back(0.3);
   // Startup ROS spinner in background
@@ -54,11 +54,11 @@ int main(int argc, char **argv)
  
 	
     ROS_INFO("Publishing fake boom position");
-
-  
+	
+    dummy_state.header.stamp = now;
     dummy_state_pub.publish(dummy_state);
 
-    ros::spinOnce();
+
 
     rate.sleep();
 

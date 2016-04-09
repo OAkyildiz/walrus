@@ -47,7 +47,7 @@ def main():
     system_install_parser = system_subparsers.add_parser('install', help='Install the system configuratoin')
     system_install_parser.set_defaults(func=system_install)
 
-    start_parser = subparsers.add_parser('start', help='Brinup WALRUS ros service')
+    start_parser = subparsers.add_parser('start', help='Bringup WALRUS ros service')
     start_parser.set_defaults(func=start_ros)
 
     restart_parser = subparsers.add_parser('restart', help='Restart WALRUS ros service')

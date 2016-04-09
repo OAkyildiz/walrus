@@ -30,6 +30,7 @@ void MultiUsbCam::deactivate() {
 
 void MultiUsbCam::publish_image() {
   if(!active())
+  	//ROS_WARN("Camera is not active");
     return;
   camera_.grab_image(&img_);
 
