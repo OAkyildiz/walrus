@@ -1,9 +1,11 @@
 <!-- Bringup file for the robot -->
 <launch>
 
-  <arg name="have_kinect"		default="true"/>
-  <arg name="have_boom"			default="true"/>
-  <arg name="have_oryx_arm" 	default="false"/>
+  <arg name="have_kinect"		default="true"	/>
+  <arg name="have_boom"			default="true"	/>
+  <arg name="have_oryx_arm" 	default="false"	/>
+  <arg name="have_imu"			default="false"	/>
+  
   <arg name="surpress_drive_errors"   default="false"/>
   
   <arg name="payload" 			default="boom"/> 
@@ -53,16 +55,13 @@
   
   <include file="$(find walrus_bringup)/launch/includes/rtabmap_bringup.launch" unless="$(arg remote_map)">
   
-
   	<arg name="remote_viz"		value="$(arg remote_viz)" />
-
-  	
 
   </include>
   
 
   <!-- IMU -->
-  <node name="orientus_node" pkg="orientus_driver" type="orientus_node" respawn="true" respawn_delay="5">
+  <node if="$(arg have_imu)" name="orientus_node" pkg="orientus_driver" type="orientus_node" respawn="true" respawn_delay="5">
     <param name="port" value="/dev/walrus_imu"/>
   </node>
   
