@@ -33,9 +33,9 @@ int main(int argc, char **argv)
     dummy_state.velocity.push_back(0.0);
     dummy_state.effort.push_back(0.0) ;
   }
-  dummy_state.position.push_back(0.1);
-  dummy_state.position.push_back(0.0);
-  dummy_state.position.push_back(0.3);
+  dummy_state.position.push_back(0.5);
+  dummy_state.position.push_back(0.5);
+  dummy_state.position.push_back(0.5);
   // Startup ROS spinner in background
   ros::AsyncSpinner spinner(1);
   spinner.start();
