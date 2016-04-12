@@ -16,7 +16,7 @@ void MultiUsbCam::activate(const CameraConfiguration& config) {
   if(active())
     deactivate();
 
-  camera_.start(definition_.name, usb_cam::UsbCam::IO_METHOD_MMAP, usb_cam::UsbCam::PIXEL_FORMAT_YUYV, config.width, config.height, config.fps);
+  camera_.start(definition_.name, usb_cam::UsbCam::IO_METHOD_MMAP, usb_cam::UsbCam::PIXEL_FORMAT_MJPEG, config.width, config.height, config.fps);
 
   state_ = STATE_ACTIVE;
 }

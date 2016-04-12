@@ -32,13 +32,16 @@
   	<remap from="$(arg payload)/joint_states" to="joint_states" />
   	<param name="controller_rate" value="25.0" type="double" />
   	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
-  </node>
+  </node>z
   
   
   <!--If we don't have a boom attached but have a kinect -->
   <node name="boom" pkg="walrus_boomboard_driver" type="dummy_boom_state_publisher" respawn="true" respawn_delay="5" unless="$(arg have_boom)">
     <remap from="$(arg payload)/joint_states" to="joint_states" />
-  	<param name="controller_rate" value="10.0" type="double" />
+	<param name="deploy" 	value="1.507"/>
+	<param name="pan" 		value="1.507"/>
+	<param name="tilt" 		value="1.507"/>
+	
   	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
   </node>
   <!-- Kinect if="$(arg have_boom)"-->

@@ -1,17 +1,25 @@
   <!-- Kinect -->
 <!-- configured bringup file for kinect-->
 <launch>
-  <arg name="resolution" default="qhd"/>
-  <arg name="payload"	 default="boom"/>
-  <arg name="device"	 default="kinect"/>
+  <arg name="resolution" 	default="qhd"/>
+  <arg name="payload"	 	default="boom"/>
+  <arg name="device"	 	default="kinect"/>
+  <arg name="fps_limit"  	default="15.0"/>
+  <arg name="depth_method"  default="opencl"/>
+  <arg name="reg_method"  default="opencl"/>
   
-  <arg name="throttle"	 default="true"/>
+  <arg name="throttle"		default="true"/>
+  
   <!--for Interfacing with web server and rtabmap together-->
   <!--First two arg's are obsolate at the moments-->
 
   <include  ns="$(arg payload)" file="$(find kinect2_bridge)/launch/kinect2_bridge.launch" >
-    <arg name="base_name" 	value="$(arg device)"/>
-    <arg name="fps_limit"         default="15.0"/>
+    <arg name="base_name" 		  value="$(arg device)"/>
+   
+    <arg name="fps_limit"		value="$(arg fps_limit)"/>
+    <arg name="depth_method"	value="$(arg depth_method)"/>
+    <arg name="reg_method"		value="$(arg reg_method)"/>
+    
 
   </include>
   

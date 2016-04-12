@@ -1,9 +1,12 @@
 <!-- Bringup file for the robot -->
 <launch>
 
-  <arg name="have_kinect"		default="true"/>
-  <arg name="have_boom"			default="true"/>
-  <arg name="have_oryx_arm" 	default="false"/>
+  <arg name="have_kinect"		default="true"	/>
+  <arg name="have_boom"			default="true"	/>
+  <arg name="have_oryx_arm" 	default="false"	/>
+  <arg name="have_imu"			default="false"	/>
+  
+  <arg name="surpress_drive_errors"   default="false"/>
   
   <arg name="payload" 			default="boom"/> 
   <arg name="kinect_devname" 	default="kinect"/> <!-- obsolate-->
@@ -18,21 +21,26 @@
   <!-- Nodes -->
   
   <!-- Base Hardware -->
-  <include file="$(find walrus_base_hw)/launch/walrus_base_hw.launch" />
+  <include file="$(find walrus_base_hw)/launch/walrus_base_hw.launch" >
+	<arg name="surpress_drive_errors"   value="$(arg surpress_drive_errors)"/>
+  
+  </include>
   
   <!-- Boomboard -->
   <node name="boom" pkg="walrus_boomboard_driver" type="walrus_boomboard_node" respawn="true" respawn_delay="5" if="$(arg have_boom)">
   
   	<remap from="$(arg payload)/joint_states" to="joint_states" />
-  	<param name="controller_rate" value="50.0" type="double" />
+  	<param name="controller_rate" value="25.0" type="double" />
   	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
-  </node>
+  </node>z
   
   
   <!--If we don't have a boom attached but have a kinect -->
   <node name="boom" pkg="walrus_boomboard_driver" type="dummy_boom_state_publisher" respawn="true" respawn_delay="5" unless="$(arg have_boom)">
     <remap from="$(arg payload)/joint_states" to="joint_states" />
-  	<param name="controller_rate" value="50.0" type="double" />
+	<param name="deploy" 	value="1.507"/>
+	<param name="pan" 		value="1.507"/>
+	<param name="tilt" 		value="1.507"/>
   	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
   </node>
   <!-- Kinect if="$(arg have_boom)"-->
@@ -49,22 +57,19 @@
   
   <include file="$(find walrus_bringup)/launch/includes/rtabmap_bringup.launch" unless="$(arg remote_map)">
   
-
   	<arg name="remote_viz"		value="$(arg remote_viz)" />
-
-  	
 
   </include>
   
 
   <!-- IMU -->
-  <node name="orientus_node" pkg="orientus_driver" type="orientus_node" respawn="true" respawn_delay="5">
+  <node if="$(arg have_imu)" name="orientus_node" pkg="orientus_driver" type="orientus_node" respawn="true" respawn_delay="5">
     <param name="port" value="/dev/walrus_imu"/>
   </node>
   
 
   <!--Cameras-->
-  <node pkg="multi_usb_cam" type="multi_usb_cam_node" name="multi_usb_cam_node" respawn="true" respawn_delay="5" if="$(arg base_cameras_en)">
+  <node pkg="multi_usb_cam" type="multi_usb_cam_node" name="multi_usb_cam_node" respawn="true" respawn_delay="5" if="$(arg base_cameras_en)" output="screen">
     <rosparam>
       cameras:
         - {name: '/dev/front_camera', topic: 'front_camera/image_raw', frame_id: 'front_camera'}
@@ -95,7 +100,7 @@
   </node>-->
 
   <include file="$(find walrus_bringup)/launch/includes/common.launch.xml">
-    <arg name="have_boom" default="true" />
+    <arg name="have_boom" value="true" />
     <arg name="have_oryx_arm" default="$(arg have_oryx_arm)" />
     <arg name="type" value="robot"/>
   </include>

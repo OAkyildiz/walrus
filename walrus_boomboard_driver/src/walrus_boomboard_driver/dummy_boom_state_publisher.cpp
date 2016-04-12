@@ -5,16 +5,25 @@
 #include <sstream>
 #include <vector>
 
+double DEPLOY;
+double PAN;
+double TILT;
+double PI=3.15149;
 
 int main(int argc, char **argv)
 {
-  
+ 
+
   ros::init(argc, argv, "dummy_boom_state");
   ros::NodeHandle dh;
   
+  dh.param("deploy", DEPLOY, PI/2);
+  dh.param("pan", PAN, PI/2);
+  dh.param("tilt", TILT, 0.0);
+  
   ros::Publisher dummy_state_pub = dh.advertise<sensor_msgs::JointState>("/joint_states", 1000);
 
-  walrus_base_hw::RealtimeRate rate(20);
+  walrus_base_hw::RealtimeRate rate(10);
   //create msg
   sensor_msgs::JointState dummy_state;
   //resize fields
@@ -33,9 +42,9 @@ int main(int argc, char **argv)
     dummy_state.velocity.push_back(0.0);
     dummy_state.effort.push_back(0.0) ;
   }
-  dummy_state.position.push_back(0.1);
-  dummy_state.position.push_back(0.0);
-  dummy_state.position.push_back(0.3);
+  dummy_state.position.push_back(DEPLOY);
+  dummy_state.position.push_back(PAN);
+  dummy_state.position.push_back(TILT);
   // Startup ROS spinner in background
   ros::AsyncSpinner spinner(1);
   spinner.start();
@@ -59,7 +68,7 @@ int main(int argc, char **argv)
     dummy_state_pub.publish(dummy_state);
 
 
-
+	ros::spinOnce();
     rate.sleep();
 
   }
