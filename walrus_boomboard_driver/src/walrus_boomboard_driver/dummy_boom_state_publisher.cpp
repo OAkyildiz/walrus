@@ -42,15 +42,11 @@ int main(int argc, char **argv)
     dummy_state.velocity.push_back(0.0);
     dummy_state.effort.push_back(0.0) ;
   }
-<<<<<<< HEAD
-  dummy_state.position.push_back(0.5);
-  dummy_state.position.push_back(0.5);
-  dummy_state.position.push_back(0.5);
-=======
+
   dummy_state.position.push_back(DEPLOY);
   dummy_state.position.push_back(PAN);
   dummy_state.position.push_back(TILT);
->>>>>>> 46410cfb3d28d21aa530bfcac9574a9601d40c4d
+
   // Startup ROS spinner in background
   ros::AsyncSpinner spinner(1);
   spinner.start();
