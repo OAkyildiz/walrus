@@ -157,6 +157,7 @@ namespace walrus_boomboard_driver
             double MOTOR_OUTPUT_SCALE;
             bool AUTO_ENABLE;
             
+            
     };
 }
 
