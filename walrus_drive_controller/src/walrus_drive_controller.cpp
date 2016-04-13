@@ -20,21 +20,12 @@ namespace walrus_drive_controller{
 
 WalrusDriveController::WalrusDriveController()
     : command_timeout_(0.5)
-
-<<<<<<< HEAD
-    , main_tread_separation_(1.0)
-    , main_tread_ground_contact_length_(1.0)
-    , tread_width_(1.0)
-    , tread_driver_radius_(1.0)
+    , main_tread_separation_(0.3207)
+    , main_tread_ground_contact_length_(0.4826)
+    , tread_width_(0.05)
+    , tread_driver_radius_(0.0765)
     , tread_separation_multiplier_(1.0)
     , tread_radius_multiplier_(1.0)
-=======
-  , main_tread_separation_(0.3207)
-  , main_tread_ground_contact_length_(0.4826)
-  , tread_width_(0.05)
-  , tread_driver_radius_(0.0765)
->>>>>>> 9ab0ed5a4df88fe5a8c3326446975322059cdf68
-
 
     , base_frame_id_("base_link")
     , odom_frame_id_("odom")

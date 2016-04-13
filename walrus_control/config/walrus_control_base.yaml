@@ -22,5 +22,7 @@ base_epos:
     main_tread_ground_contact_length: 0.4826
     tread_width: 0.05
     cmd_vel_timeout: 0.5
+    tread_separation_multiplier: 1.0
+    tread_radius_multiplier: 1.0
     base_frame_id: walrus/base_footprint
     odom_frame_id: walrus/odom
