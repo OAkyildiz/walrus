@@ -130,7 +130,7 @@ namespace walrus_drive_controller
     {
       return linear_;
     }
-
+	
     /**
      * \brief angular velocity getter
      * \return angular velocity [rad/s]
@@ -146,6 +146,11 @@ namespace walrus_drive_controller
      * \param wheel_radius     Wheel radius [m]
      */
     void setWheelParams(double wheel_separation, double wheel_radius);
+    
+	double getWheelSeparation() const
+    {
+      return wheel_separation_;
+    }
 
   private:
 

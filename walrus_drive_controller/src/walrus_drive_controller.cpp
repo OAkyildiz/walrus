@@ -18,10 +18,10 @@ namespace walrus_drive_controller{
 WalrusDriveController::WalrusDriveController()
   : command_timeout_(0.5)
 
-  , main_tread_separation_(1.0)
-  , main_tread_ground_contact_length_(1.0)
-  , tread_width_(1.0)
-  , tread_driver_radius_(1.0)
+  , main_tread_separation_(0.3207)
+  , main_tread_ground_contact_length_(0.4826)
+  , tread_width_(0.05)
+  , tread_driver_radius_(0.0765)
 
   , base_frame_id_("base_link")
   , odom_frame_id_("odom")
@@ -132,6 +132,9 @@ void WalrusDriveController::update(const ros::Time& time, const ros::Duration& p
       odom_pub_->msg_.twist.twist.linear.x  = odometry_.getLinear();
       odom_pub_->msg_.twist.twist.angular.z = odometry_.getAngular();
       odom_pub_->unlockAndPublish();
+      //ROS_ERROR_STREAM("Main tread separation: " << main_tread_separation_);
+      //ROS_ERROR_STREAM("Wheel tread separation in odom.h: " << odometry_.getWheelSeparation());
+
     }
 
     // Publish tf /odom frame
