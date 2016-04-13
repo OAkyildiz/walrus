@@ -1,10 +1,12 @@
 <launch>
+  <arg name="avoid_enable"		default="true"/>
   <node name="interface_controller" pkg="walrus_interface_controller" type="interface_controller_node">
     <param name="have_joystick_controller" value="true" />
   </node>
 
   <node name="joystick_controller" pkg="walrus_joystick_controller" type="joystick_controller_node">
-    <remap from="tank_drive" to="/base_epos/drive_controller/tank_drive" />
+    <remap unless="$(arg avoid_enable)" from="tank_drive" to="/base_epos/drive_controller/tank_drive" />
+    <remap if="$(arg avoid_enable)" from="tank_drive" to="/base_epos/drive_controller/pre_tank_drive" />
     <remap from="left_pods_joint_controller/front/command" to="/base/left_pods_joint_controller/front/command" />
     <remap from="right_pods_joint_controller/front/command" to="/base/right_pods_joint_controller/front/command" />
     <remap from="left_pods_joint_controller/back/command" to="/base/left_pods_joint_controller/back/command" />
