@@ -15,30 +15,58 @@
 
 namespace walrus_drive_controller{
 
+  /**
+   * This class makes some assumptions on the model of the robot:
+   *  - the rotation axes of wheels are collinear
+   *  - the wheels are identical in radius
+   * Additional assumptions to not duplicate information readily available in the URDF:
+   *  - the wheels have the same parent frame
+   *  - a wheel collision geometry is a cylinder in the urdf
+   *  - a wheel joint frame center's vertical projection on the floor must lie within the contact patch
+   */
 class WalrusDriveController
   : public controller_interface::Controller<hardware_interface::VelocityJointInterface>
 {
  public:
   WalrusDriveController();
 
-  bool init(hardware_interface::VelocityJointInterface* hw,
-	    ros::NodeHandle& root_nh,
-	    ros::NodeHandle &controller_nh);
+    /**
+     * \brief Initialize controller
+     * \param hw            Velocity joint interface for the wheels
+     * \param root_nh       Node handle at root namespace
+     * \param controller_nh Node handle inside the controller namespace
+     */
+    bool init(hardware_interface::VelocityJointInterface* hw,
+              ros::NodeHandle& root_nh,
+              ros::NodeHandle &controller_nh);
 
-  void update(const ros::Time& time, const ros::Duration& period);
+    /**
+     * \brief Updates controller, i.e. computes the odometry and sets the new velocity commands
+     * \param time   Current time
+     * \param period Time since the last called to update
+     */
+    void update(const ros::Time& time, const ros::Duration& period);
 
-  void starting(const ros::Time& time);
+    /**
+     * \brief Starts controller
+     * \param time Current time
+     */
+    void starting(const ros::Time& time);
 
-  void stopping(const ros::Time& time);
+    /**
+     * \brief Stops controller
+     * \param time Current time
+     */
+    void stopping(const ros::Time& /*time*/);
 
- private:
-  std::string name_;
+  private:
+    std::string name_;
 
-
-  // parameters
+    /// Odometry related:
   ros::Duration publish_period_;
   ros::Time last_state_publish_time_;
   double command_timeout_;
+    bool open_loop_;
 
   double main_tread_separation_;
   double main_tread_ground_contact_length_;
@@ -46,15 +74,26 @@ class WalrusDriveController
   double tread_driver_radius_;
 
 
-  std::string base_frame_id_;
-  std::string odom_frame_id_;
+    /// Wheel separation and radius calibration multipliers:
+    double tread_separation_multiplier_;
+    double tread_radius_multiplier_;
 
+    /// Frame to use for the robot base:
+    std::string base_frame_id_;
+
+    /// Frame to use for odometry and odom tf:
+    std::string odom_frame_id_;
+
+    /// Number of wheel joints:
+    size_t tread_joints_size_;
 
   hardware_interface::JointHandle left_tread_joint_;
   hardware_interface::JointHandle right_tread_joint_;
-
+  
+      /// 2nd degree Speed limiters for jerk control (Old odom data)):
 
   Odometry odometry_;
+  Odometry odometry_old_;
 
   boost::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Odometry> > odom_pub_;
   boost::shared_ptr<realtime_tools::RealtimePublisher<tf::tfMessage> > tf_odom_pub_;
@@ -72,12 +111,23 @@ class WalrusDriveController
   SpeedLimiter limiter_ang_;
 
  private:
+    /**
+     * \brief Brakes the wheels, i.e. sets the velocity to 0
+     */
   void brake();
 
-  void cmdVelCallback(const geometry_msgs::Twist& command);
-  void tankCallback(const walrus_drive_controller::TankDriveCommand& command);
+    /**
+     * \brief Velocity command callback
+     * \param command Velocity command message (twist)
+     */
+    void cmdVelCallback(const geometry_msgs::Twist& command);
+    /**
+     * \brief tank drive command callback
+     * \param command TankDrive command message (twist)
+     */
+    void tankCallback(const walrus_drive_controller::TankDriveCommand& command);
 
-  void setOdomPubFields(ros::NodeHandle& root_nh, ros::NodeHandle& controller_nh);
+    void setOdomPubFields(ros::NodeHandle& root_nh, ros::NodeHandle& controller_nh);
 
 };
 
