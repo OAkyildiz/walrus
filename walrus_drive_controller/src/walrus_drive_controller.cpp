@@ -67,7 +67,7 @@ bool WalrusDriveController::init(hardware_interface::VelocityJointInterface* hw,
     controller_nh.param("tread_driver_radius", tread_driver_radius_, tread_driver_radius_);
     ROS_INFO_STREAM_NAMED(name_, "Tread driver radius: " << tread_driver_radius_);
 
-    odometry_.setWheelParams(main_tread_separation_, tread_driver_radius_);
+    //odometry_.setWheelParams(main_tread_separation_, tread_driver_radius_); // here, no more
 
 
     // Rates and timeouts
@@ -87,7 +87,7 @@ bool WalrusDriveController::init(hardware_interface::VelocityJointInterface* hw,
 
     controller_nh.param("tread_radius_multiplier", tread_radius_multiplier_, tread_radius_multiplier_);
     ROS_INFO_STREAM_NAMED(name_, "Tread radius will be multiplied by "
-                          << tread_radius_multiplier_ << ".");
+                          << tread_radius_multiplier_ << "/boom/kinect/bond.");
 
     int velocity_rolling_window_size = 10;
     controller_nh.param("velocity_rolling_window_size", velocity_rolling_window_size, velocity_rolling_window_size);
@@ -148,10 +148,17 @@ bool WalrusDriveController::init(hardware_interface::VelocityJointInterface* hw,
 void WalrusDriveController::update(const ros::Time& time, const ros::Duration& period)
 {
 
-    //double left_pos  = left_tread_joint_.getPosition();
-    //double right_pos = right_tread_joint_.getPosition();
-    //odometry_.update(left_pos, right_pos, time);
-
+	double left_pos  = 0.0;
+    double right_pos = 0.0;
+    
+    const double lp = left_tread_joint_.getPosition();
+    const double rp = right_tread_joint_.getPosition();
+    if (std::isnan(lp) || std::isnan(rp))
+          return;
+    left_pos  += lp;
+    right_pos += rp;
+    //ROS_ERROR_STREAM("LP:"<<left_pos << "RP"<< right_pos);
+    odometry_.update(left_pos/M_TO_INCH, right_pos/M_TO_INCH, time);
     // Publish odometry message
     if(last_state_publish_time_ + publish_period_ < time)
     {
@@ -231,8 +238,11 @@ void WalrusDriveController::update(const ros::Time& time, const ros::Duration& p
             brake();
         }
         else {
+        
+        	
             left_tread_joint_.setCommand(curr_cmd.left_speed/wr);
             right_tread_joint_.setCommand(curr_cmd.right_speed/wr);
+        	
         }
     }
 
@@ -246,6 +256,7 @@ void WalrusDriveController::starting(const ros::Time& time)
     last_state_publish_time_ = time;
 
     odometry_.init(time);
+    odometry_old_.init(time);
     geometry_msgs::TwistStamped twist;
     twist.header.stamp = ros::Time(0);
     twist.twist.linear.x = 0;

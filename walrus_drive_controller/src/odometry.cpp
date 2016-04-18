@@ -172,4 +172,4 @@ namespace walrus_drive_controller
     angular_acc_ = RollingMeanAcc(RollingWindow::window_size = velocity_rolling_window_size_);
   }
 
-} // namespace diff_drive_controller
+} // namespace walrus_drive_controller

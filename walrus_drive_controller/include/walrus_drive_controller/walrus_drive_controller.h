@@ -15,6 +15,8 @@
 
 namespace walrus_drive_controller{
 
+  const double DRIVE_SENSITIVITY=3.0;
+  const double M_TO_INCH=39.37;
   /**
    * This class makes some assumptions on the model of the robot:
    *  - the rotation axes of wheels are collinear

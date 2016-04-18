@@ -148,10 +148,10 @@
       <walrus_center_tread lr="right" parent="${tf_prefix}base_link" translateY="-1" flipY="-1" tf_prefix="${tf_prefix}"/>
 
       <!-- Pods -->
-      <walrus_pod fb="back" lr="left" parent="${tf_prefix}base_link" translateX="-1" translateY="1" flipY="1" tf_prefix="${tf_prefix}"/>
-      <walrus_pod fb="back" lr="right" parent="${tf_prefix}base_link" translateX="-1" translateY="-1" flipY="-1" tf_prefix="${tf_prefix}"/>
-      <walrus_pod fb="front" lr="left" parent="${tf_prefix}base_link" translateX="1" translateY="1" flipY="1" tf_prefix="${tf_prefix}"/>
-      <walrus_pod fb="front" lr="right" parent="${tf_prefix}base_link" translateX="1" translateY="-1" flipY="-1" tf_prefix="${tf_prefix}"/>
+      <walrus_pod fb="back" lr="left" parent="${tf_prefix}base_link" translateX="-1" translateY="1" flipY="1" rotate="-1.2" tf_prefix="${tf_prefix}"/>
+      <walrus_pod fb="back" lr="right" parent="${tf_prefix}base_link" translateX="-1" translateY="-1" flipY="-1" rotate="0" tf_prefix="${tf_prefix}"/>
+      <walrus_pod fb="front" lr="left" parent="${tf_prefix}base_link" translateX="1" translateY="1" flipY="1" rotate="0" tf_prefix="${tf_prefix}"/>
+      <walrus_pod fb="front" lr="right" parent="${tf_prefix}base_link" translateX="1" translateY="-1" flipY="-1" rotate="0" tf_prefix="${tf_prefix}"/>
 
       <!-- Cameras -->
       <simple_camera parent="${tf_prefix}base_link" tf_prefix="${tf_prefix}front_camera" camera_ns="${robot_ns}/front_camera" name="front_camera">

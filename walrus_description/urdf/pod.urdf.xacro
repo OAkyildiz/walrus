@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="walrus_pod" machine="walrus">
-	<xacro:macro name="walrus_pod" params="fb lr parent translateX translateY flipY tf_prefix"> <!--fb : front, back ; lr: left, right -->
+	<xacro:macro name="walrus_pod" params="fb lr parent translateX translateY flipY rotate tf_prefix "> <!--fb : front, back ; lr: left, right -->
 		<link name="${tf_prefix}${fb}_${lr}_pod">
 			<inertial>
 				<mass value="${pod_mass}" />
@@ -9,7 +9,7 @@
 					iyy="${pod_iyy_com_cs}" iyz="${pod_iyz_com_cs}" izz="${pod_izz_com_cs}" />
 			</inertial>
 			<visual>
-				<origin xyz="0 0 0" rpy="${M_PI/2 - flipY*M_PI/2} 0 0" />
+				<origin xyz="0 0 0" rpy="${M_PI/2 - flipY*M_PI/2} ${rotate*M_PI/2} 0" />
 				<geometry>
 				  <mesh filename="package://walrus_description/meshes/pod.stl" machine="walrus"/>
 				</geometry>

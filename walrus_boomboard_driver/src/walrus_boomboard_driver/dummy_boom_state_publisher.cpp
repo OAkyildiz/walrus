@@ -17,8 +17,8 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "dummy_boom_state");
   ros::NodeHandle dh;
   
-  dh.param("deploy", DEPLOY, PI/2);
-  dh.param("pan", PAN, PI/2);
+  dh.param("deploy", DEPLOY, 0.0);
+  dh.param("pan", PAN, 0.0);
   dh.param("tilt", TILT, 0.0);
   
   ros::Publisher dummy_state_pub = dh.advertise<sensor_msgs::JointState>("/joint_states", 1000);
