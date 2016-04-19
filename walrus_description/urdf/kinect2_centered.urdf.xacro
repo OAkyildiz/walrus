@@ -8,7 +8,7 @@
   <xacro:macro name="kinect2" params="parent name *origin tf_prefix">
 
     <material name="Kinect2Grey">
-      <color rgba="0.15 0.15 0.15 1.0"/>
+      <color rgba="0.10 0.10 0.10 1.0"/>
     </material>
 
 
@@ -32,7 +32,7 @@
     
     <!-- Joint connecting the ir frame to base frame -->
     <joint name="${tf_prefix}_ir_joint" type="fixed">
-      <origin rpy="${-M_PI/2} 0 ${-M_PI/2}" xyz="0 0 .025"/>
+      <origin rpy="${-M_PI/2} 0 ${-M_PI/2}" xyz="0 0 -.025"/>
       <parent link="${tf_prefix}_base"/>
       <child link="${tf_prefix}_ir_optical_frame"/>
     </joint>
@@ -43,7 +43,7 @@
     
      <!-- Joint connecting the rgb frame to base frame -->
     <joint name="${tf_prefix}_rgb_joint" type="fixed">
-      <origin rpy="${-M_PI/2} 0 ${-M_PI/2}" xyz="0 -.100 .025"/>
+      <origin rpy="${-M_PI/2} 0 ${-M_PI/2}" xyz="0 -.100 -.025"/>
       <parent link="${tf_prefix}_base"/>
       <child link="${tf_prefix}_rgb_optical_frame"/>
     </joint>
