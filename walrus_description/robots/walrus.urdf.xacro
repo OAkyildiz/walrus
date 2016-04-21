@@ -44,7 +44,7 @@
   <property name="kinect_screw" value="$(arg kinect_screw)" />
 
   <xacro:if value="$(arg hard_kinect)">
-    <xacro:kinect2 parent="${tf_prefix}tilt_base" tf_prefix="kinect" name="kinect" >
+    <xacro:kinect2 parent="${tf_prefix}base_link" tf_prefix="kinect" name="kinect" >
 			<origin xyz="5*${kinect_screw} 0 0" rpy="0 0 0" />
     </xacro:kinect2>
   </xacro:if>
