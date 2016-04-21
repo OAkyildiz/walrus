@@ -2,10 +2,14 @@
 <launch>
 
   <arg name="have_kinect"		default="true"	/>
-  <arg name="have_boom"			default="true"	/>
+
   <arg name="have_oryx_arm" 	default="false"	/>
   <arg name="have_imu"			default="false"	/>
-  
+  <arg name="hard_kinect"		default="false"	/>
+
+  <arg if = "$(arg hard_kinect)"           name = "have_boom"             default="false"/> 
+  <arg unless = "$(arg hard_kinect)"       name = "have_boom"             default="true"/>   
+
   <arg name="surpress_drive_errors"   default="false"/>
   
   <arg name="payload" 			default="boom"/> 
@@ -101,8 +105,13 @@
   </node>-->
 
   <include file="$(find walrus_bringup)/launch/includes/common.launch.xml">
-    <arg name="have_boom" value="true" />
+
     <arg name="have_oryx_arm" default="$(arg have_oryx_arm)" />
+    <arg name = "hard_kinect"           default="$(arg hard_kinect)"/>
+
+    <arg if = "$(arg hard_kinect)"      name = "have_boom"             default="false"/> 
+    <arg unless = "$(arg hard_kinect)"       name = "have_boom"             default="true"/> 
+
     <arg name="type" value="robot"/>
   </include>
 </launch>

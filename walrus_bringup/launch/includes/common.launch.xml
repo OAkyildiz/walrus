@@ -1,11 +1,14 @@
 <!-- Launch everything common between simulation and the real robot -->
 <launch>
-  <arg name="type" />
-  <arg name="have_boom" />
-  <arg name="have_oryx_arm" />
-  <include file="$(find walrus_description)/launch/description.launch">
-    <arg name="have_boom" default="$(arg have_boom)" />
-    <arg name="have_oryx_arm" default="$(arg have_oryx_arm)" />
+  <arg name = "type" />
+  <arg name = "have_boom" />
+  <arg name = "have_oryx_arm" />
+  <arg name = "hard_kinect"     /> 
+
+<include file="$(find walrus_description)/launch/description.launch">
+    <arg name = "have_boom"       default = "$(arg have_boom)" />
+    <arg name = "have_oryx_arm"   default = "$(arg have_oryx_arm)" />
+    <arg name = "hard_kinect"     default = "$(arg hard_kinect)"    /> 
   </include>
 
   <include file="$(find walrus_control)/launch/walrus_control.launch">

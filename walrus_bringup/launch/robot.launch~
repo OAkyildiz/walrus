@@ -2,10 +2,14 @@
 <launch>
 
   <arg name="have_kinect"		default="true"	/>
-  <arg name="have_boom"			default="true"	/>
+
   <arg name="have_oryx_arm" 	default="false"	/>
   <arg name="have_imu"			default="false"	/>
-  
+  <arg name="hard_kinect"		default="false"	/>
+
+  <arg if = "hard_kinect"           name = "have_boom"             default="false"/> 
+  <arg unless = "hard_kinect"       name = "have_boom"             default="true"/>   
+
   <arg name="surpress_drive_errors"   default="false"/>
   
   <arg name="payload" 			default="boom"/> 
@@ -38,9 +42,9 @@
   <!--If we don't have a boom attached but have a kinect -->
   <node name="boom" pkg="walrus_boomboard_driver" type="dummy_boom_state_publisher" respawn="true" respawn_delay="5" unless="$(arg have_boom)">
     <remap from="$(arg payload)/joint_states" to="joint_states" />
-	<param name="deploy" 	value="0"/>
-	<param name="pan" 		value="0"/>
-	<param name="tilt" 		value="0"/>
+	<param name="deploy" 	value="0.0"/>
+	<param name="pan" 		value="0.0"/>
+	<param name="tilt" 		value="0.0"/>
 	
   	<rosparam command="load" file="$(find walrus_boomboard_driver)/config/boomboard_param.yaml" />
   </node>
@@ -101,8 +105,13 @@
   </node>-->
 
   <include file="$(find walrus_bringup)/launch/includes/common.launch.xml">
-    <arg name="have_boom" value="true" />
+
     <arg name="have_oryx_arm" default="$(arg have_oryx_arm)" />
+    <arg name = "hard_kinect"           default="$(arg hard_kinect)"/>
+
+    <arg if = "$(arg hard_kinect)"      name = "have_boom"             default="false"/> 
+    <arg unless = "$(arg hard_kinect)"       name = "have_boom"             default="true"/> 
+
     <arg name="type" value="robot"/>
   </include>
 </launch>

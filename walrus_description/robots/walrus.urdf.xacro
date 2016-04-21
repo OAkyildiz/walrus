@@ -8,6 +8,7 @@
 
   <property name="tf_prefix" value="$(arg tf_prefix)" />
   <property name="robot_ns" value="$(arg robot_ns)" />
+  <property name="kinect_screw" value="$(arg kinect_screw)" />
 
   <xacro:walrus tf_prefix="${tf_prefix}" robot_ns="${robot_ns}"/>
 
@@ -26,6 +27,8 @@
     </plugin>
   </gazebo>
 
+
+
   <xacro:if value="$(arg have_boom)">
     <xacro:walrus_boom parent="${tf_prefix}base_link" tf_prefix="${tf_prefix}boom/" robot_ns="${robot_ns}/boom"/>
 
@@ -35,6 +38,13 @@
 	<robotSimType>walrus_gazebo/WalrusBoomHWSim</robotSimType>
       </plugin>
     </gazebo>
+  </xacro:if>
+
+  <property name="kinect_screw" value="$(arg kinect_screw)" />
+
+  <xacro:if value="$(arg hard_kinect)">
+    <xacro:kinect2 parent="${tf_prefix}tilt_base" tf_prefix="kinect" name="kinect" >
+			<origin xyz="5*${kinect_screw} 0 0" rpy="0 0 0" />
   </xacro:if>
 
   <xacro:if value="$(arg have_oryx_arm)">

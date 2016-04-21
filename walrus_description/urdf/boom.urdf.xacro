@@ -160,7 +160,7 @@
 		<!-- Kinect -->
 		<!--kinect2 parent="${tf_prefix}tilt_base" tf_prefix="${tf_prefix}kinect" camera_ns="${robot_ns}/kinect" name="boom_kinect"-->
 		<kinect2 parent="${tf_prefix}tilt_base" tf_prefix="kinect" name="kinect" >
-			<origin xyz="0 0 0.03" rpy="0 0 0" />
+			<origin xyz="0 0 0" rpy="0 0 0" />
 		</kinect2>
 
   	</xacro:macro>
