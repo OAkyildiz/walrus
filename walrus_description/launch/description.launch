@@ -3,7 +3,7 @@
   <arg name = "have_oryx_arm"         default="true"/> 
   <arg name = "hard_kinect"           default="false"/> <!-- Kinect Attached to the base?-->
 
-  <arg if = "$(arg hard_kinect)"           name = "have_boom"             default="false"/> 
+  <arg if ="$(arg hard_kinect)"           name = "have_boom"             default="false"/> 
   <arg unless = "$(arg hard_kinect)"         name = "have_boom"             default="true"/> 
    
   <arg name = "kinect_screw" default = "6" />  
